@@ -44,7 +44,9 @@
     <string name="bak_black">黑色</string> 
     <string name="bak_orange">橙色</string> 
     <string name="bak_blue">藍色</string> 
-    <string name="bak_red">紅色</string>   
+    <string name="bak_red">紅色</string>
+    <string name="dwnCtnTitle">下載新的蝴蝶資料庫</string>
+    <string name="dwnCtnContent">是否下載新的蝴蝶圖鑑資料庫？</string>   
     
     
 </resources>

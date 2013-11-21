@@ -1,5 +1,6 @@
 package com.example.maptest;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -24,9 +25,6 @@ public class MainActivity extends FragmentActivity {
 	private android.support.v4.app.FragmentManager fragment = getSupportFragmentManager();
 	// private TextView topBarText;
 	private LayoutInflater layoutInflater;
-	private static final String TAG = "SQLITE";
-	public static final String PREF = "SQLITE＿PREF";
-	public static final String PREF_VERSION = "SQLITE＿Version";
 
 	private Class fragmentArray[] = { PhotographicGuideFragment.class,
 			SearchEngineFragment.class, emailFragment.class, mapFragment.class };
@@ -36,6 +34,7 @@ public class MainActivity extends FragmentActivity {
 
 	private String mTextviewArray[] = { "圖鑑", "搜尋", "報告", "熱點" };
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -293,15 +292,6 @@ public class MainActivity extends FragmentActivity {
 				});// .setIcon(R.drawable.icon_sosad);
 		AlertDialog alert = builder.create();
 		alert.show();
-	}
-
-	// Restore preferences
-	private void restorePrefs() {
-		SharedPreferences settings = getSharedPreferences(PREF, 0);
-		String pref_height = settings.getString(PREF_VERSION, "");
-		if (!"".equals(pref_height)) {
-			// PhotographicGuideFragment.this.setVersion(0);
-		}
 	}
 
 }

@@ -15,7 +15,8 @@ public class UserFunctions {
 
 	private static String DBURL = "http://fyp.tswsw.com";
 
-	private static String version_tag = "checkVersion";
+	private static String checkVersion_tag = "checkVersion";
+	private static String getVersion_tag = "getVersion";
 
 	private Context context;
 
@@ -29,12 +30,12 @@ public class UserFunctions {
 		return context;
 	}
 
-	public JSONObject checkVersion(int currentVersion) {
-		// Building Parameters
-		final String passVersion = currentVersion + "";
+	public JSONObject getVersion() {
 		JSONObject json;
 
-		DbNetworkConnect networkConnect = new DbNetworkConnect(getActivity(), currentVersion);
+		DbNetworkConnect networkConnect = new DbNetworkConnect(getActivity(),
+				0, getVersion_tag);
+		// 0 is the version notation, but there will not need the current version
 		networkConnect.start();
 
 		try {
@@ -43,25 +44,52 @@ public class UserFunctions {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		// return json
+
+		// return JSON
+		json = networkConnect.getResult();
+		return json;
+	}
+
+	public JSONObject checkVersion(int currentVersion) {
+		final String passVersion = currentVersion + "";
+		JSONObject json;
+
+		DbNetworkConnect networkConnect = new DbNetworkConnect(getActivity(),
+				currentVersion, checkVersion_tag);
+		networkConnect.start();
+
+		try {
+			networkConnect.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// return JSON
 		json = networkConnect.getResult();
 		return json;
 	}
 
 	public class DbNetworkConnect extends Thread {
-		public DbNetworkConnect(Context context, int passVersion) {
+		public DbNetworkConnect(Context context, int passVersion, String tag) {
 			super();
 			this.passVersion = passVersion + "";
+			this.tag = tag;
 		}
+
 		JSONObject json = null;
 		String passVersion;
-		
+		String tag;
+
 		@Override
 		public void run() {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("tag", version_tag));
-			params.add(new BasicNameValuePair("currentVersion", passVersion));
+			if (tag.equals(checkVersion_tag)) {
+				params.add(new BasicNameValuePair("tag", tag));
+				params.add(new BasicNameValuePair("currentVersion", passVersion));
+			} else if(tag.equals(getVersion_tag)) {
+				params.add(new BasicNameValuePair("tag", tag));
+			}
 			json = jsonParser.getJSONFromUrl(DBURL, params);
 		}
 

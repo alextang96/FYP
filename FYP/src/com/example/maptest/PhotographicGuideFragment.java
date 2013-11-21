@@ -1,7 +1,5 @@
 package com.example.maptest;
 
-import static com.example.maptest.DBButterfly.DATABASE_NAME;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,14 +22,6 @@ public class PhotographicGuideFragment extends Fragment {
 	// Helper Class Name
 	DBButterfly helper;
 
-	// User Database Version
-	public static int DATABASE_VERSION;
-
-	// User Preference
-	private static final String TAG = "SQLITE";
-	public static final String PREF = "SQLITE＿PREF";
-	public static final String PREF_VERSION = "SQLITE＿Version";
-
 	// Activity
 	Activity activity;
 
@@ -43,9 +33,7 @@ public class PhotographicGuideFragment extends Fragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		this.activity = activity;
-		restorePrefs();
-		helper = new DBButterfly(activity, DATABASE_VERSION);
-		Log.e("Current Database Version", DATABASE_VERSION + "");
+		helper = new DBButterfly(activity);
 	}
 
 	@Override
@@ -66,6 +54,7 @@ public class PhotographicGuideFragment extends Fragment {
 				String[] returnString = helper
 						.getSpecificChineseNameBySpecies(db, v.getTag()
 								+ "");
+				db.close();
 				for (int i = 0; i < returnString.length; i++) {
 					Log.e("getSpecific1ChineseNameBySpecies", returnString[i]);
 				}
@@ -74,7 +63,7 @@ public class PhotographicGuideFragment extends Fragment {
 				for (int i = 0; i < returnString.length; i++) {
 					butterflyData.putStringArray("butterfly", returnString);
 				}
-
+				
 				((MainActivity) getActivity()).addGuide2Fragment(butterflyData);
 				((MainActivity) getActivity()).detachGuide1Fragment();
 				// Intent intent = new Intent(getActivity(),
@@ -89,7 +78,6 @@ public class PhotographicGuideFragment extends Fragment {
 
 				// Toast.makeText(getActivity(), v.getTag() + "",
 				// Toast.LENGTH_SHORT).show();
-				db.close();
 			}
 
 		};
@@ -118,36 +106,10 @@ public class PhotographicGuideFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
 		db = helper.getReadableDatabase();
 		int intNoOfRecord = Integer.valueOf(helper.getNoOfData(db));
-		Log.e("NoOfRecord", intNoOfRecord + "");
 		db.close();
-
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		SharedPreferences settings = activity.getSharedPreferences(PREF, 1);
-		SharedPreferences.Editor PE = settings.edit();
-		PE.putInt(PREF_VERSION, DATABASE_VERSION);
-		PE.commit();
-	}
-
-	public int getVersion() {
-		return DATABASE_VERSION;
-	}
-
-	public void setVersion(int version) {
-		this.DATABASE_VERSION = version;
-	}
-
-	// Restore preferences
-	private void restorePrefs() {
-		SharedPreferences settings = activity.getSharedPreferences(PREF, 1);
-		int intPrefVersion = settings.getInt(PREF_VERSION, 1);
-		DATABASE_VERSION = intPrefVersion;
+		Log.e("NoOfRecord", intNoOfRecord + "");
 	}
 
 }
