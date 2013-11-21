@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg" >
+
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="125dp" />
+    
+   
+
+   
+
+    <EditText
+        android:id="@+id/emailtext"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:textSize="20dp"
+        android:background="@drawable/emailtextsize3"
+        android:ems="10"
+        android:inputType="textPersonName" />
+     
+     <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" >
+    
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+    
+    <Button
+        android:id="@+id/select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selectbtn" />
+
+    <Button
+        android:id="@+id/emailsendbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sdbtn"/>
+    
+    </LinearLayout>
+    <ScrollView android:layout_width="440dp"
+        android:layout_height="300dp">
+
+
+        <LinearLayout android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:showDividers="middle"
+            android:divider="?android:dividerHorizontal"
+            android:animateLayoutChanges="true"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" />
+
+    </ScrollView>
+    
+    
+    </LinearLayout>
+    
+
+</LinearLayout>

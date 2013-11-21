@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Fung Yuen Butterfly</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_btf_details">Butterfly Details</string>
+
+    
+	<!--for check box -->
+	
+	<string-array name="rangeString">  
+        <item>大</item>  
+        <item>中</item>  
+        <item>小</item>
+    </string-array>
+    
+	<string-array name="sexString">  
+        <item>男</item>  
+        <item>女</item> 
+    </string-array>
+    
+	<string-array name="haveWingTailString">  
+        <item>有</item>  
+        <item>沒有</item> 
+    </string-array>
+	
+	
+    <!--翅面主色-->
+    <string name="fotColor">翅面主色 :</string>
+    <string name="fot_brown">褐色</string>
+    <string name="fot_yellow">黃色</string> 
+    <string name="fot_white">白色</string>
+    <string name="fot_black">黑色</string> 
+    <string name="fot_orange">橙色</string> 
+    <string name="fot_blue">藍色</string>  
+    
+    
+    <!--翅底主色 -->
+    <string name="bakColor">翅底主色 :</string>
+    <string name="bak_brown">褐色</string>
+    <string name="bak_yellow">黃色</string> 
+    <string name="bak_white">白色</string>
+    <string name="bak_black">黑色</string> 
+    <string name="bak_orange">橙色</string> 
+    <string name="bak_blue">藍色</string> 
+    <string name="bak_red">紅色</string>   
+    
+    
+</resources>
