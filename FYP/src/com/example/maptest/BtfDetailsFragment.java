@@ -1,7 +1,5 @@
 package com.example.maptest;
 
-import static com.example.maptest.DBButterfly.DATABASE_NAME;
-import static com.example.maptest.DBButterfly.BTF_SPECIES;
 import static com.example.maptest.DBButterfly.BTF_ADULTHABIT;
 import static com.example.maptest.DBButterfly.BTF_APPEARTIME;
 import static com.example.maptest.DBButterfly.BTF_BABYHABIT;
@@ -15,28 +13,25 @@ import static com.example.maptest.DBButterfly.BTF_FONTCOLOR;
 import static com.example.maptest.DBButterfly.BTF_HAVEWINGTAIL;
 import static com.example.maptest.DBButterfly.BTF_RANGETYPE;
 import static com.example.maptest.DBButterfly.BTF_SEX;
+import static com.example.maptest.DBButterfly.BTF_SPECIES;
 import static com.example.maptest.DBButterfly.BTF_SUBJECT;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import edu.mit.mobile.android.imagecache.ImageCache;
-import edu.mit.mobile.android.imagecache.ImageLoaderAdapter;
-import edu.mit.mobile.android.imagecache.SimpleThumbnailAdapter;
-
 import android.app.Activity;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.TextView;
+import edu.mit.mobile.android.imagecache.ImageCache;
+import edu.mit.mobile.android.imagecache.ImageLoaderAdapter;
 
 public class BtfDetailsFragment extends Fragment {
 
@@ -149,6 +144,7 @@ public class BtfDetailsFragment extends Fragment {
 
 		HashMap<String, String> btfData = new HashMap<String, String>();
 		btfData = helper.getButterflyDetails(db, strButterflyName);
+		db.close();
 
 		if (!btfData.isEmpty()) {
 			tv[tvSET[tvENGNAME][INDEX]].setText(btfData.get(BTF_ENGLISHNAME));
@@ -170,14 +166,7 @@ public class BtfDetailsFragment extends Fragment {
 			tv[tvSET[tvSCINAME][INDEX]].setText(btfData.get(BTF_SUBJECT));
 		}
 
-		db.close();
-
 		return view;
-	}
-
-	private Gallery findViewById(int gallery2) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	// @Override

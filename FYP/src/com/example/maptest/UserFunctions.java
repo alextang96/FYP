@@ -1,13 +1,19 @@
 package com.example.maptest;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.util.Log;
 
 public class UserFunctions {
 
@@ -97,6 +103,43 @@ public class UserFunctions {
 			// progressDialog.dismiss();
 			return json;
 		}
+	}
+	
+	public JSONObject LoadData(String inFile, Context context) {
+		InputStream stream = null;
+		String json = null;
+		JSONObject jObj = null;
+		StringBuilder sb = new StringBuilder();
+
+		try {
+			stream = context.getAssets().open(inFile);
+		} catch (IOException e) {
+			// Handle exceptions here
+		}
+
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					stream, "UTF-8"), 8);
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "n");
+			}
+			json = sb.toString();
+			Log.e("JSON", json);
+		} catch (Exception e) {
+			Log.e("Buffer Error", "Error converting result " + e.toString());
+		}
+
+		// try parse the string to a JSON object
+		try {
+			jObj = new JSONObject(json);
+		} catch (JSONException e) {
+			Log.e("JSON Parser", "Error parsing data " + e.toString());
+		}
+
+		// return JSON String
+		return jObj;
+
 	}
 
 }

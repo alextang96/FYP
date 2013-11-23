@@ -59,12 +59,24 @@ public class DBButterfly extends SQLiteOpenHelper {
 	public DBButterfly(Context context) {
 		this(context, loadCurrentVersion(context));
 	}
-	
-	private static boolean databaseExist(Context context)
-	{
-	    File dbFile = context.getDatabasePath(DATABASE_NAME);
-	    Log.e("databaseExist(context)", dbFile.exists() + "");
-	    return dbFile.exists();
+
+	@Override
+	public synchronized void close() {
+		super.close();
+		Log.e("DB Closed", "true");
+	}
+
+	@Override
+	public SQLiteDatabase getReadableDatabase() {
+		Log.e("Readable Database Got", "true");
+		Log.e("mGetReadable Version", this.DATABASE_VERSION + "");
+		return super.getReadableDatabase();
+	}
+
+	private static boolean databaseExist(Context context) {
+		File dbFile = context.getDatabasePath(DATABASE_NAME);
+		Log.e("databaseExist(context)", dbFile.exists() + "");
+		return dbFile.exists();
 	}
 
 	private static int loadCurrentVersion(Context context) {
@@ -73,24 +85,19 @@ public class DBButterfly extends SQLiteOpenHelper {
 			if (databaseExist(context)) {
 				db = SQLiteDatabase.openOrCreateDatabase(
 						context.getDatabasePath(DATABASE_NAME), null);
-				if (db.getVersion() > 1) {
-					DATABASE_VERSION = db.getVersion();
-				} else {
-					// nothing to do because the database version is 1
-				}
+				DATABASE_VERSION = db.getVersion();
 			} else {
 				// The database is not Exist
 			}
 		} catch (SQLException ex) {
-			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG)
-					.show();
-			Log.e("DBButterfly Load Current Version", ex.getMessage());
+			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
+			Log.e("DBButterfly Load Current Version", ex.getMessage() + " The Database Version is " + db.getVersion());
 		}
 		return DATABASE_VERSION;
 	}
 
 	private DBButterfly(Context context, int version) {
-		this(context, DATABASE_NAME, null, version);
+		this(context, DATABASE_NAME, null, loadCurrentVersion(context));
 		Log.e("Current Database Version", DATABASE_VERSION + "");
 	}
 
@@ -98,8 +105,11 @@ public class DBButterfly extends SQLiteOpenHelper {
 			int version) {
 		super(context, name, factory, version);
 		this.setContext(context);
-
 		if (DATABASE_VERSION == 1) {
+			insertTableFromAsset();
+		}
+
+		if (DATABASE_VERSION == 4) { // Call to download new update from the web
 			new AlertDialog.Builder(context)
 					.setTitle(R.string.dwnCtnTitle)
 					.setMessage(R.string.dwnCtnContent)
@@ -108,7 +118,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 								public void onClick(DialogInterface dialog,
 										int which) {
 									// Run onUpgrade
-									insertTable();
+									insertTableFromWeb();
 								}
 							})
 					.setNegativeButton(android.R.string.cancel,
@@ -143,7 +153,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 	}
 
 	// Download JSON from the webserver and insert back to the SQLite
-	private void insertTable() {
+	private void insertTableFromWeb() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		UserFunctions uf = new UserFunctions(getContext());
 		JSONObject json = uf.checkVersion(DATABASE_VERSION);
@@ -179,6 +189,55 @@ public class DBButterfly extends SQLiteOpenHelper {
 				json = uf.getVersion();
 				Log.e("json.getString(\"version\")", json.getString("version"));
 				db.setVersion(Integer.valueOf(json.getString("version")));
+				DATABASE_VERSION = Integer.valueOf(json.getString("version"));
+			} else {
+				// db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+				Toast.makeText(
+						context,
+						"Can not connect to the server, please uninstall the application and try again.",
+						Toast.LENGTH_LONG).show();
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// insert table in the asset folder
+	private void insertTableFromAsset() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		UserFunctions uf = new UserFunctions(getContext());
+		JSONObject json = uf.LoadData("butterfly.json", getContext());
+		try {
+			if (json != null) {
+				for (int i = 0; i < json.getInt("noOfRecord"); i++) {
+					addRecord(db, json.getInt(BTF_ID + i),
+							json.getString(BTF_SEX + i),
+							json.getString(BTF_SPECIES + i),
+							json.getString(BTF_CHINESENAME + i),
+							json.getString(BTF_ENGLISHNAME + i),
+							json.getString(BTF_SUBJECT + i),
+							json.getString(BTF_BODYRANGE + i),
+							json.getString(BTF_RANGETYPE + i),
+							json.getString(BTF_FONTCOLOR + i),
+							json.getString(BTF_BACKCOLOR + i),
+							json.getString(BTF_HAVEWINGTAIL + i),
+							json.getString(BTF_ADULTHABIT + i),
+							json.getString(BTF_BABYHABIT + i),
+							json.getString(BTF_DETAIL + i),
+							json.getString(BTF_APPEARTIME + i),
+							json.getString(BTF_DISTRIBUTIONS + i),
+							json.getString(BTF_IMAGE1 + i),
+							json.getString(BTF_IMAGE2 + i),
+							json.getString(BTF_IMAGE3 + i));
+					Log.e("BTF_ID", json.getInt(BTF_ID + i) + "");
+					Log.e("BTF_CHINESENAME",
+							json.getString(BTF_CHINESENAME + i) + "");
+					Log.e("BTF_DISTRIBUTIONS",
+							json.getString(BTF_DISTRIBUTIONS + i));
+				}
+				db.setVersion(2);
+				DATABASE_VERSION = 2;
+				// The default version 1 -> 2
 			} else {
 				// db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 				Toast.makeText(

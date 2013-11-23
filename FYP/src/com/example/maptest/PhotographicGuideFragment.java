@@ -34,6 +34,7 @@ public class PhotographicGuideFragment extends Fragment {
 		super.onAttach(activity);
 		this.activity = activity;
 		helper = new DBButterfly(activity);
+		db = helper.getReadableDatabase();
 	}
 
 	@Override
@@ -50,11 +51,9 @@ public class PhotographicGuideFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Log.e("PhotographicGuideFragment", "onClick()");
-				db = helper.getReadableDatabase();
 				String[] returnString = helper
 						.getSpecificChineseNameBySpecies(db, v.getTag()
 								+ "");
-				db.close();
 				for (int i = 0; i < returnString.length; i++) {
 					Log.e("getSpecific1ChineseNameBySpecies", returnString[i]);
 				}
@@ -106,9 +105,7 @@ public class PhotographicGuideFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		db = helper.getReadableDatabase();
 		int intNoOfRecord = Integer.valueOf(helper.getNoOfData(db));
-		db.close();
 		Log.e("NoOfRecord", intNoOfRecord + "");
 	}
 
