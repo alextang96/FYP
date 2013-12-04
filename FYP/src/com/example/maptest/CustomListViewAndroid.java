@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +31,7 @@ public class CustomListViewAndroid extends Fragment {
 	private Button topBarBtn;
 	private int onCreateViewToken = 0;
 	ImageCache cache;
+	private boolean isNullRecord = false;
 	
 	
 	@Override
@@ -99,10 +101,7 @@ public class CustomListViewAndroid extends Fragment {
 		                100, ImageLoaderAdapter.UNIT_DIP);
 		list.setAdapter(cacheAdapter);
 		list.setOnItemClickListener(clickListener);
-		
-		
-		
-		
+				
 		return view;
 
 	}
@@ -113,6 +112,8 @@ public class CustomListViewAndroid extends Fragment {
 		for (int i = 0; i < strButterflyData.length; i++) {
 
 			final ListModel sched = new ListModel();
+			
+			
 
 			/******* Firstly take data in model object ******/
 			sched.setButterflyName(strButterflyData[i]);
@@ -121,7 +122,9 @@ public class CustomListViewAndroid extends Fragment {
 			/******** Take Model Object in ArrayList **********/
 			CustomListViewValuesArr.add(sched);
 		}
-
+		Log.e("strButterflyData.length", strButterflyData.length + "");
+		isNullRecord = strButterflyData.length < 2? true:false;
+		
 	}
 
 	/***************** This function used by adapter ****************/
@@ -156,27 +159,15 @@ public class CustomListViewAndroid extends Fragment {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
-
-			// TODO Auto-generated method stub
+			if (isNullRecord == false) {
 			ListModel tempValues = CustomListViewValuesArr.get(arg2);
 
-			// SHOW ALERT
-
-			// Toast.makeText(CustomListView,
-			// ""+tempValues.getButterflyName()
-			// +" Image:"+tempValues.getImage(),
-			// Toast.LENGTH_LONG)
-			// .show();
-
-			// Intent intent = new Intent(CustomListViewAndroid.this,
-			// BtfDetails.class);
 			Bundle butterflyData = new Bundle();
 			butterflyData.putString("butterfly", tempValues.getButterflyName());
-			//
-			// intent.putExtras(butterflyData);
-			// startActivity(intent);
+
 			((MainActivity) getActivity()).detachGuide2Fragment();
 			((MainActivity) getActivity()).addGuide3Fragment(butterflyData);
+			}
 
 		}
 

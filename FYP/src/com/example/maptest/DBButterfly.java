@@ -113,7 +113,6 @@ public class DBButterfly extends SQLiteOpenHelper {
 	}
 	
 	private void checkForUpdate() {
-		// TODO
 		UserFunctions uf = new UserFunctions(getContext());
 		JSONObject json = uf.getVersion();		
 		int intRemoteDBVersion;
