@@ -69,7 +69,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 	@Override
 	public SQLiteDatabase getReadableDatabase() {
 		Log.e("Readable Database Got", "true");
-		Log.e("mGetReadable Version", this.DATABASE_VERSION + "");
+		Log.e("mGetReadable Version", DATABASE_VERSION + "");
 		return super.getReadableDatabase();
 	}
 
@@ -109,26 +109,44 @@ public class DBButterfly extends SQLiteOpenHelper {
 			insertTableFromAsset();
 		}
 
-		if (DATABASE_VERSION == 4) { // Call to download new update from the web
-			new AlertDialog.Builder(context)
-					.setTitle(R.string.dwnCtnTitle)
-					.setMessage(R.string.dwnCtnContent)
-					.setPositiveButton(android.R.string.ok,
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// Run onUpgrade
-									insertTableFromWeb();
-								}
-							})
-					.setNegativeButton(android.R.string.cancel,
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// do nothing
-									// finish();
-								}
-							}).show();
+		checkForUpdate();
+	}
+	
+	private void checkForUpdate() {
+		// TODO
+		UserFunctions uf = new UserFunctions(getContext());
+		JSONObject json = uf.getVersion();		
+		int intRemoteDBVersion;
+		try {
+			intRemoteDBVersion = Integer.valueOf(json.getString("version"));
+			String strShowMessage = (String) getContext().getResources().getText(R.string.dwnCtnContent) + " ( " + " ver. " +DATABASE_VERSION + " -> " + " ver. " + intRemoteDBVersion + " ) ";
+		if (intRemoteDBVersion > DATABASE_VERSION) {
+		new AlertDialog.Builder(context)
+		.setTitle(R.string.dwnCtnTitle)
+		.setMessage(strShowMessage)
+		.setPositiveButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,
+							int which) {
+						// Run onUpgrade
+						insertTableFromWeb();
+					}
+				})
+		.setNegativeButton(android.R.string.cancel,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,
+							int which) {
+						// do nothing
+						// finish();
+					}
+				}).show();
+		}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
