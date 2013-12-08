@@ -708,8 +708,8 @@ public class DBButterfly extends SQLiteOpenHelper {
 	public String[] getSpecificChineseNameBySpecies(SQLiteDatabase db,
 			String species) {
 		String statement = "" + "SELECT " + BTF_CHINESENAME + " FROM "
-				+ TABLE_NAME + " WHERE " + BTF_SPECIES + " LIKE '" + species
-				+ "'";
+				+ TABLE_NAME + " WHERE " + BTF_SPECIES + " LIKE '%" + species
+				+ "%'";
 
 		Cursor cursor = db.rawQuery(statement, null);
 		Log.e("statement", statement);
