@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import edu.mit.mobile.android.imagecache.ImageCache;
 import edu.mit.mobile.android.imagecache.ImageLoaderAdapter;
@@ -32,8 +33,8 @@ public class CustomListViewAndroid extends Fragment {
 	private int onCreateViewToken = 0;
 	ImageCache cache;
 	private boolean isNullRecord = false;
-	
-	
+	private Bundle tempBundle;
+
 	@Override
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
@@ -47,19 +48,20 @@ public class CustomListViewAndroid extends Fragment {
 			Bundle savedInstanceState) {
 		topBarBtn = (Button) getActivity().findViewById(R.id.backbarbtn);
 		topBarBtn.setVisibility(View.VISIBLE);
-		
-		cache =  ImageCache.getInstance(this.getActivity());
-		
+
+		cache = ImageCache.getInstance(this.getActivity());
+		tempBundle = getArguments();
 		topBarBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				((MainActivity) getActivity()).delGuide2Fragment();
 
-				((MainActivity) getActivity()).attachGuide1Fragment();
-				// ((MainActivity) getActivity()).addGoogleMapFragment();
-
+				if (tempBundle.getInt("fromPage") == 2) {
+					((ControlSearchFragment) getParentFragment()).popBack();
+				} else {
+					((ControlGuideFramgent) getParentFragment()).popBack();
+				}
 			}
 
 		});
@@ -91,17 +93,15 @@ public class CustomListViewAndroid extends Fragment {
 		/**************** Create Custom Adapter *********/
 		adapter = new CustomAdapter(getActivity(), CustomListViewValuesArr, res);
 		list.setAdapter(adapter);
-		
-		
-		//Context context, ListAdapter wrapped, ImageCache cache,
-        //int[] imageViewIDs, int defaultWidth, int defaultHeight, int unit
-		ImageLoaderAdapter cacheAdapter = 
-				new ImageLoaderAdapter(this.getActivity(), 
-						adapter, cache, new int[] { R.id.image }, 100,
-		                100, ImageLoaderAdapter.UNIT_DIP);
+
+		// Context context, ListAdapter wrapped, ImageCache cache,
+		// int[] imageViewIDs, int defaultWidth, int defaultHeight, int unit
+		ImageLoaderAdapter cacheAdapter = new ImageLoaderAdapter(
+				this.getActivity(), adapter, cache, new int[] { R.id.image },
+				100, 100, ImageLoaderAdapter.UNIT_DIP);
 		list.setAdapter(cacheAdapter);
 		list.setOnItemClickListener(clickListener);
-				
+
 		return view;
 
 	}
@@ -112,8 +112,6 @@ public class CustomListViewAndroid extends Fragment {
 		for (int i = 0; i < strButterflyData.length; i++) {
 
 			final ListModel sched = new ListModel();
-			
-			
 
 			/******* Firstly take data in model object ******/
 			sched.setButterflyName(strButterflyData[i]);
@@ -123,36 +121,11 @@ public class CustomListViewAndroid extends Fragment {
 			CustomListViewValuesArr.add(sched);
 		}
 		Log.e("strButterflyData.length", strButterflyData.length + "");
-		isNullRecord = strButterflyData.length < 2? true:false;
-		
+		isNullRecord = strButterflyData.length < 2 ? true : false;
+
 	}
 
 	/***************** This function used by adapter ****************/
-	// public void onItemClick(int mPosition)
-	// {
-	// ListModel tempValues = ( ListModel )
-	// CustomListViewValuesArr.get(mPosition);
-	//
-	//
-	// // SHOW ALERT
-	//
-	// // Toast.makeText(CustomListView,
-	// // ""+tempValues.getButterflyName()
-	// // +" Image:"+tempValues.getImage(),
-	// // Toast.LENGTH_LONG)
-	// // .show();
-	//
-	// // Intent intent = new Intent(CustomListViewAndroid.this,
-	// BtfDetails.class);
-	// Bundle butterflyData = new Bundle();
-	// butterflyData.putString("butterfly", tempValues.getButterflyName());
-	// //
-	// // intent.putExtras(butterflyData);
-	// // startActivity(intent);
-	// ((MainActivity) getActivity()).addGuide3Fragment(butterflyData);
-	//
-	//
-	// }
 
 	public OnItemClickListener clickListener = new OnItemClickListener() {
 
@@ -160,13 +133,22 @@ public class CustomListViewAndroid extends Fragment {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 			if (isNullRecord == false) {
-			ListModel tempValues = CustomListViewValuesArr.get(arg2);
+				ListModel tempValues = CustomListViewValuesArr.get(arg2);
 
-			Bundle butterflyData = new Bundle();
-			butterflyData.putString("butterfly", tempValues.getButterflyName());
+				Bundle butterflyData = new Bundle();
+				butterflyData.putString("butterfly",
+						tempValues.getButterflyName());
 
-			((MainActivity) getActivity()).detachGuide2Fragment();
-			((MainActivity) getActivity()).addGuide3Fragment(butterflyData);
+				if (tempBundle.getInt("fromPage") == 2) {
+
+					((ControlSearchFragment) getParentFragment())
+							.replaceGuide2Fragment(butterflyData);
+				} else {
+
+					((ControlGuideFramgent) getParentFragment())
+							.replaceGuide2Fragment(butterflyData);
+				}
+
 			}
 
 		}

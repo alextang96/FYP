@@ -10,17 +10,29 @@
 	<!--for check box -->
 	
 	<string-array name="rangeString">  
+	    <item>/</item>
         <item>大</item>  
         <item>中</item>  
         <item>小</item>
     </string-array>
     
-	<string-array name="sexString">  
-        <item>男</item>  
-        <item>女</item> 
+	<string-array name="specString"> 
+	    <item>/</item> 
+        <item>弄蝶科</item>  
+        <item>鳳蝶科</item> 
+        <item>粉蝶科</item> 
+        <item>灰蝶科</item> 
+        <item>蜆蝶科</item> 
+        <item>眼蝶科</item> 
+        <item>環蝶科</item> 
+        <item>蛺蝶科</item> 
+        <item>斑蝶科</item> 
+        <item>珍蝶科</item> 
+        <item>喙蝶科</item> 
     </string-array>
     
 	<string-array name="haveWingTailString">  
+	    <item>/</item>
         <item>有</item>  
         <item>沒有</item> 
     </string-array>

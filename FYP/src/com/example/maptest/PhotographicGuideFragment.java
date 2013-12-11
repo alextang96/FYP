@@ -35,6 +35,8 @@ public class PhotographicGuideFragment extends Fragment {
 		this.activity = activity;
 		helper = new DBButterfly(activity);
 		db = helper.getReadableDatabase();
+		
+		helper.getHotPointDetails(db, "butterfly1");
 	}
 
 	@Override
@@ -63,20 +65,10 @@ public class PhotographicGuideFragment extends Fragment {
 					butterflyData.putStringArray("butterfly", returnString);
 				}
 				
-				((MainActivity) getActivity()).addGuide2Fragment(butterflyData);
-				((MainActivity) getActivity()).detachGuide1Fragment();
-				// Intent intent = new Intent(getActivity(),
-				// CustomListViewAndroid.class);
-				// Bundle butterflyData = new Bundle();
-				// for (int i = 0 ; i < returnString.length ; i++) {
-				// butterflyData.putStringArray("butterfly", returnString);
-				// }
-				//
-				// intent.putExtras(butterflyData);
-				// startActivity(intent);
+//				((MainActivity) getActivity()).addGuide2Fragment(butterflyData);
+//				((MainActivity) getActivity()).detachGuide1Fragment();
+				((ControlGuideFramgent) getParentFragment()).replaceGuide1Fragment(butterflyData);
 
-				// Toast.makeText(getActivity(), v.getTag() + "",
-				// Toast.LENGTH_SHORT).show();
 			}
 
 		};

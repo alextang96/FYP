@@ -4,73 +4,120 @@
     android:layout_height="fill_parent"
     android:background="@drawable/bg"
     android:orientation="vertical" >
-
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical" >
-
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textSize="95dp" />
-
+            android:layout_height="110dp"/>
+        
+	<LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+	    <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"/>
+	    
         <TextView
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/hotpointicon"
             android:text=" 鳳園"
-            android:textSize="38dp" />
-
+            android:textSize="43dp" 
+            android:id="@+id/hp_Name"/>
+        </LinearLayout>
+        
         <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="500dp" >
-
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical" >
-
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:orientation="vertical" >
-
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text="" />
-
+                   <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+	    <TextView
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"/>
+                    
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/busicon"
                         android:text=" 附近交通公具"
-                        android:textSize="45dp" />
-
+                        android:textSize="38dp" />
+</LinearLayout>
+                    
+                    
+                    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+	    <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"/>
+                    
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="     巴士 : 275, 275S 74K, 73, 75K"
-                        android:textSize="25sp" />
-
+                        android:text="巴士 :"
+                        android:textSize="25sp"
+                        android:id="@+id/hp_transportation1" />
+                    </LinearLayout>
+                    
+                      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+	    <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"/>
+                    
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="     小巴 : 20C, 20K"
-                        android:textSize="25sp" />
-
+                        android:text="小巴 :"
+                        android:textSize="25sp"
+                        android:id="@+id/hp_transportation2"  />
+                    </LinearLayout>
+                    
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="18dp"
                         android:text="" />
-
+                    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+	    <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"/>
+                    
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/butterflyicon"
                         android:text=" 附近的蝴蝶"
-                        android:textSize="45dp" />
+                        android:textSize="38dp" />
+                    
+                    </LinearLayout>
                     
                     <TextView
                         android:layout_width="fill_parent"
@@ -91,12 +138,10 @@
                     <HorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" >
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal" >
-
                             <TextView
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
@@ -108,7 +153,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/s0" />
-
                             <TextView
                             android:layout_width="20dp"
                             android:layout_height="wrap_content" />
@@ -130,7 +174,6 @@
                                 android:src="@drawable/s0" />
                         </LinearLayout>
                     </HorizontalScrollView>
-
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="15dp"
@@ -146,22 +189,42 @@
                         android:layout_width="fill_parent"
                         android:layout_height="18dp"
                         android:text="" />
-
+                    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+	    <TextView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"/>
+                    
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/treeicon"
                         android:text=" 環境近況"
-                        android:textSize="45dp" />
-
+                        android:textSize="38dp" />
+                    </LinearLayout>
+                    
+                       <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+	    <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"/>
+                    
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text=" xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                        android:textSize="25dp" />
+                        android:text="ABC"
+                        android:textSize="25dp"
+                        android:id="@+id/hp_environment"  />
+                    
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-
 </LinearLayout>
