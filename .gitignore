@@ -32,4 +32,4 @@ proguard/
 .DS_Store
 
 #MS File
-#Thumbs.db
+Thumbs.db
