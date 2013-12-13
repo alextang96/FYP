@@ -40,22 +40,24 @@ public class BtfDetailsFragment extends Fragment {
 
 	private final TestData mTestData = new TestData();
 
-	final int[][] tvSET = { { 0, R.id.sex }, { 1, R.id.spec },
-			{ 2, R.id.engName }, { 3, R.id.bodyRange }, { 4, R.id.rangeType },
-			{ 5, R.id.fotColor }, { 6, R.id.backColor },
-			{ 7, R.id.haveWingTail }, { 8, R.id.adultHabit },
-			{ 9, R.id.badyHabit }, { 10, R.id.idenDetail },
-			{ 11, R.id.Distributions }, { 12, R.id.appearTime },
-			{ 13, R.id.chiName }, { 14, R.id.sciName } };
+	private SQLiteDatabase db;
+	
+	final int[][] tvSET = { { 0, R.id.spec },
+			{ 1, R.id.engName }, { 2, R.id.bodyRange }, { 3, R.id.rangeType },
+			{ 4, R.id.fotColor }, { 5, R.id.backColor },
+			{ 6, R.id.haveWingTail }, { 7, R.id.adultHabit },
+			{ 8, R.id.badyHabit }, { 9, R.id.idenDetail },
+			{ 10, R.id.Distributions }, { 11, R.id.appearTime },
+			{ 12, R.id.chiName }, { 13, R.id.sciName } };
 
-	final int tvSEX = 0, tvSPEC = 1, tvENGNAME = 2, tvBODYRANGE = 3,
-			tvRangeType = 4, tvFONTCOLOR = 5, tvBACKCOLOR = 6,
-			tvHAVEWINGTAIL = 7, tvADULTHABIT = 8, tvBABYHABIT = 9,
-			tvIDENDETAIL = 10, tvDISTRIBUTIONS = 11, tvAPPEARTIME = 12,
-			tvCHINAME = 13, tvSCINAME = 14;
+	final int tvSPEC = 0, tvENGNAME = 1, tvBODYRANGE = 2,
+			tvRangeType = 3, tvFONTCOLOR = 4, tvBACKCOLOR = 5,
+			tvHAVEWINGTAIL = 6, tvADULTHABIT = 7, tvBABYHABIT = 8,
+			tvIDENDETAIL = 9, tvDISTRIBUTIONS = 10, tvAPPEARTIME = 11,
+			tvCHINAME = 12, tvSCINAME = 13;
 
 	final int INDEX = 0, RID = 1;
-	TextView[] tv = new TextView[15];
+	TextView[] tv = new TextView[14];
 
 	private String strButterflyName;
 	private DBButterfly helper;
@@ -66,6 +68,14 @@ public class BtfDetailsFragment extends Fragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		helper = new DBButterfly(activity);
+	}
+	
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		db.close();
+		helper.close();
+		Log.e("Photographic Guide Fragment detached", "true");
 	}
 
 	private void initData() {
@@ -122,7 +132,7 @@ public class BtfDetailsFragment extends Fragment {
 			tv[i] = (TextView) view.findViewById(tvSET[i][RID]);
 		}
 
-		SQLiteDatabase db = helper.getReadableDatabase();
+		db = helper.getReadableDatabase();
 		// Get Bundle Data
 		strButterflyName = getArguments().getString("butterfly");
 
@@ -131,7 +141,6 @@ public class BtfDetailsFragment extends Fragment {
 		db.close();
 		if (!btfData.isEmpty()) {
 			tv[tvSET[tvENGNAME][INDEX]].setText(btfData.get(BTF_ENGLISHNAME));
-			tv[tvSET[tvSEX][INDEX]].setText(btfData.get(BTF_SEX));
 			tv[tvSET[tvSPEC][INDEX]].setText(btfData.get(BTF_SPECIES));
 			tv[tvSET[tvBODYRANGE][INDEX]].setText(btfData.get(BTF_BODYRANGE));
 			tv[tvSET[tvRangeType][INDEX]].setText(btfData.get(BTF_RANGETYPE));

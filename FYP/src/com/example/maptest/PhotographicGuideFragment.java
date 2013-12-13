@@ -39,6 +39,16 @@ public class PhotographicGuideFragment extends Fragment {
 		helper.getHotPointDetails(db, "butterfly1");
 		helper.checkForUpdate();
 	}
+	
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		db.close();
+		helper.close();
+		Log.e("Photographic Guide Fragment detached", "true");
+	}
+
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
