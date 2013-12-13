@@ -121,11 +121,9 @@ public class DBButterfly extends SQLiteOpenHelper {
 		if (DATABASE_VERSION == 1) {
 			insertTableFromAsset();
 		}
-
-		checkForUpdate();
 	}
 	
-	private void checkForUpdate() {
+	public void checkForUpdate() {
 		UserFunctions uf = new UserFunctions(getContext());
 		JSONObject json = uf.getVersion();		
 		int intRemoteDBVersion;
@@ -194,6 +192,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 
 	// Download JSON from the webserver and insert back to the SQLite
 	private void insertTableFromWeb() {
+		db.execSQL("DROP TABLE IF EXISTS " + BUTTERFLY_TABLE_NAME);
 		
 		Log.e("DBBUTERFLY","insertTableFromWeb");
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -233,7 +232,6 @@ public class DBButterfly extends SQLiteOpenHelper {
 				db.setVersion(Integer.valueOf(json.getString("version")));
 				DATABASE_VERSION = Integer.valueOf(json.getString("version"));
 			} else {
-				// db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
 				Toast.makeText(
 						context,
 						"Can not connect to the server, please uninstall the application and try again.",
