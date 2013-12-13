@@ -38,6 +38,7 @@ public class SplashScreen extends Activity {
 					// Wait given period of time or exit on touch
 					wait(3000);
 					Log.e("hello world", "i am jerry");
+					Log.e("hello world2", "i am jerry2");
 				}
 			} catch (InterruptedException ex) {
 			}
