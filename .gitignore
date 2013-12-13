@@ -30,3 +30,6 @@ proguard/
 
 #Mac File
 .DS_Store
+
+#MS File
+#Thumbs.db

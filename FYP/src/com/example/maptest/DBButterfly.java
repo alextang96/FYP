@@ -57,15 +57,17 @@ public class DBButterfly extends SQLiteOpenHelper {
 
 	static SQLiteDatabase db;
 
-	private static final String H_ID = "_id";
+	Cursor cursor;
+	
+	protected static final String H_ID = "_id";
 
-	private static final String H_NAME = "name";
+	protected static final String H_NAME = "name";
 
-	private static final String H_TRANS = "transportation";
+	protected static final String H_TRANS = "transportation";
 
-	private static final String H_BTF = "butterfly";
+	protected static final String H_BTF = "butterfly";
 
-	private static final String H_ENVIRO = "environment";
+	protected static final String H_ENVIRO = "environment";
 
 	public DBButterfly(Context context) {
 		this(context, loadCurrentVersion(context));
@@ -192,6 +194,8 @@ public class DBButterfly extends SQLiteOpenHelper {
 
 	// Download JSON from the webserver and insert back to the SQLite
 	private void insertTableFromWeb() {
+		
+		Log.e("DBBUTERFLY","insertTableFromWeb");
 		SQLiteDatabase db = this.getWritableDatabase();
 		UserFunctions uf = new UserFunctions(getContext());
 		JSONObject json = uf.checkVersion(DATABASE_VERSION);
@@ -280,6 +284,10 @@ public class DBButterfly extends SQLiteOpenHelper {
 				this.addHotspotRecord(db, 1, "First places", "BUS", "Butterfly1", "XXXXXXXXXXXX");
 				this.addHotspotRecord(db, 2, "First places", "BUS", "Butterfly1", "XXXXXXXXXXXX");
 				this.addHotspotRecord(db, 3, "First places", "BUS", "Butterfly1", "XXXXXXXXXXXX");
+				this.addHotspotRecord(db, 0, "地點1", "  巴士： 227,244,58K （test1）", "Butterfly1", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test1）");
+				this.addHotspotRecord(db, 1, "地點2", "  巴士： 227,244,58K （test2）", "Butterfly2", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test2）");
+				this.addHotspotRecord(db, 2, "地點3", "  巴士： 227,244,58K （test3）", "Butterfly1", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test3）");
+				this.addHotspotRecord(db, 3, "地點4", "  巴士： 227,244,58K （test4）", "Butterfly1", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test4）");
 				
 				
 				db.setVersion(2);
@@ -311,6 +319,9 @@ public class DBButterfly extends SQLiteOpenHelper {
 				hpData.put(H_TRANS, cursor.getString(0));
 				hpData.put(H_BTF, cursor.getString(1));
 				hpData.put(H_ENVIRO, cursor.getString(2));
+				hpData.put(H_TRANS, cursor.getString(2));
+				hpData.put(H_BTF, cursor.getString(3));
+				hpData.put(H_ENVIRO, cursor.getString(4));
 			} else {
 				// No Data
 			}
@@ -865,5 +876,117 @@ public class DBButterfly extends SQLiteOpenHelper {
 
 		return sNote;
 	}
+	
+	
+	
+	
+	
+	
+	
+//	public String[] getChineseNameByFotColor(SQLiteDatabase db, String[] string) {
+//		Log.e("pppo", "jgkjvkjgvjb");
+//		cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from " + BUTTERFLY_TABLE_NAME, null); 
+//		
+//
+//		
+//		
+//		switch (string.length-1){
+//				
+//		case 0:
+////			Log.e("pppo", "jgkjvkjgvjb");
+////			cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from " + BUTTERFLY_TABLE_NAME +
+////					" WHERE " + BTF_FONTCOLOR + " LIKE '" + string[0] + "'", null); 
+//		case 1: 
+//			cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from " + BUTTERFLY_TABLE_NAME +
+//					" WHERE " + BTF_FONTCOLOR + " LIKE '" + string[0] + "' AND " + BTF_FONTCOLOR + " = '" + string[1] +"'", null);
+//		case 2:
+//			cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from " + BUTTERFLY_TABLE_NAME +
+//					" WHERE " + BTF_FONTCOLOR + " = '" + string[0] + "' AND " + BTF_FONTCOLOR + " = '" + string[1] + "' AND " + BTF_FONTCOLOR + " = '" + string[2] +"'", null); 
+//		case 3: 
+//			cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from " + BUTTERFLY_TABLE_NAME + 
+//					" WHERE " + BTF_FONTCOLOR + " = '" + string[0] + "' AND " + BTF_FONTCOLOR + " = '" + string[1]+ "' AND " + BTF_FONTCOLOR + " = '" + string[2]+ "' AND " + BTF_FONTCOLOR + " = '" + string[3] +"'", null);
+//		case 4:
+//			cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from " + BUTTERFLY_TABLE_NAME + 
+//					" WHERE " + BTF_FONTCOLOR + " = '" + string[0] + "' AND " + BTF_FONTCOLOR + " = '" + string[1]+ "' AND " + BTF_FONTCOLOR + " = '" + string[2]+ "' AND " + BTF_FONTCOLOR + " = '" + string[3]+ "' AND " + BTF_FONTCOLOR + " = '" + string[4] +"'", null); 
+//		case 5: 
+//			cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from " + BUTTERFLY_TABLE_NAME +
+//					" WHERE " + BTF_FONTCOLOR + " = '" + string[0] + "' AND " + BTF_FONTCOLOR + " = '" + string[1]+ "' AND " + BTF_FONTCOLOR + " = '" + string[2]+ "' AND " + BTF_FONTCOLOR + " = '" + string[3]+ "' AND " + BTF_FONTCOLOR + " = '" + string[4]+ "' AND " + BTF_FONTCOLOR + " = '" + string[5]+"'", null);
+//		
+//		}
+//			
+////					Cursor cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from "
+////					+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_FONTCOLOR + " = '" + fotcolor
+////					+ "'", null);
+//
+//			// sNote is using for store the retrieve data
+//			String[] sNote = cursorToArray(cursor);
+//			Log.e(sNote[0],"323");
+//			cursor.close(); // close the cursor to release resources
+//
+//			return sNote;
+//		}
+	public String[] getChineseNameByRangeType(SQLiteDatabase db,
+			String rangeType) {
+		
+		//backup
+		Cursor cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from "
+				+ BUTTERFLY_TABLE_NAME + " WHERE "  + rangeType, null);
 
+
+//		Cursor cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from "
+//				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_RANGETYPE + " = '" + rangeType
+//				+ "'", null);
+		
+		
+		Log.e(rangeType,"hi");
+		// sNote is using for store the retrieve data
+		String[] sNote = cursorToArray(cursor);
+
+		cursor.close(); // close the cursor to release resources
+
+		return sNote;
+	}
+		//	}
+//	public String[] getChineseNameBySex(SQLiteDatabase db, String sex) {
+//		Cursor cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from "
+//				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_SEX + " LIKE '%" + sex + "%'",
+//				null);
+//
+//		// sNote is using for store the retrieve data
+//		String[] sNote = cursorToArray(cursor);
+//
+//		cursor.close(); // close the cursor to release resources
+//
+//		return sNote;
+//	}
+//	public String[] getChineseNameByhaveWingTail(SQLiteDatabase db,
+//			String haveWingTail) {
+//		Cursor cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from "
+//				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_HAVEWINGTAIL + " = '"
+//				+ haveWingTail + "'", null);
+//
+//		// sNote is using for store the retrieve data
+//		String[] sNote = cursorToArray(cursor);
+//
+//		cursor.close(); // close the cursor to release resources
+//
+//		return sNote;
+//	}
+//	public String[] getChineseNameByFotColor(SQLiteDatabase db, String chiName) {
+//		Cursor cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from "
+//				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_FONTCOLOR + " LIKE '%" + chiName
+//				+ "%'", null);
+//		
+////		Cursor cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from "
+////		+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_FONTCOLOR + " LIKE '%" +"褐色"
+////		+ "%'" +" AND fotColor LIKE '%"+  "黃色" + "%'", null);
+//
+//
+//		// sNote is using for store the retrieve data
+//		String[] sNote = cursorToArray(cursor);
+//		Log.e(sNote[0],"323");
+//		cursor.close(); // close the cursor to release resources
+//
+//		return sNote;
+//	}
 }

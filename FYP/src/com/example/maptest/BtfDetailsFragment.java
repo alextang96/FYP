@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.TextView;
+import android.widget.Toast;
 import edu.mit.mobile.android.imagecache.ImageCache;
 import edu.mit.mobile.android.imagecache.ImageLoaderAdapter;
 
@@ -59,6 +60,7 @@ public class BtfDetailsFragment extends Fragment {
 	private String strButterflyName;
 	private DBButterfly helper;
 	private Button topBarBtn;
+	private Bundle tempBundle;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -66,86 +68,67 @@ public class BtfDetailsFragment extends Fragment {
 		helper = new DBButterfly(activity);
 	}
 
-	@Override
-	public void onDestroyView() {
-		// TODO Auto-generated method stub
-		super.onDestroyView();
-		((MainActivity) ((MainActivity) getActivity()))
-				.setTopBarButtonOnResume("Destory_BtfDetailsFragment");
-		// ((MainActivity) ((MainActivity) getActivity())).addGoogleMapFragment();
-
-	}
-	
-	
 	private void initData() {
-        mTestData
-                .addItem(
-                        "Bond Image",
-                        "http://fyp.tswsw.com/www/btfImages/0_1.jpg");
-        mTestData
-                .addItem(
-                        "green home",
-                        "http://fyp.tswsw.com/www/btfImages/0_2.jpg");
-        mTestData
-                .addItem(
-                        "green home 2",
-                        "http://fyp.tswsw.com/www/btfImages/0_3.jpg");
+		mTestData.addItem("Bond Image",
+				"http://fyp.tswsw.com/www/btfImages/0_1.jpg");
+		mTestData.addItem("green home",
+				"http://fyp.tswsw.com/www/btfImages/0_2.jpg");
+		mTestData.addItem("green home 2",
+				"http://fyp.tswsw.com/www/btfImages/0_3.jpg");
 	}
-	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		topBarBtn = (Button) ((MainActivity) ((MainActivity) getActivity())).findViewById(R.id.backbarbtn);
+		topBarBtn = (Button) ((MainActivity) ((MainActivity) getActivity()))
+				.findViewById(R.id.backbarbtn);
 		topBarBtn.setVisibility(View.VISIBLE);
 		topBarBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				((MainActivity) ((MainActivity) getActivity())).delGuide3Fragment();
-
-				// ((MainActivity) ((MainActivity) getActivity())).addGoogleMapFragment();
+				tempBundle = getArguments();
+				if (tempBundle.getInt("fromPage") == 2) {
+					((ControlSearchFragment) getParentFragment()).popBack();
+				} else {
+					((ControlGuideFramgent) getParentFragment()).popBack();
+				}
 			}
 
 		});
 
 		View view = inflater.inflate(R.layout.activity_btf_details, container,
 				false);
-		
-		final Gallery	gallery = (Gallery) view.findViewById(R.id.gallery);
-		
+
+		final Gallery gallery = (Gallery) view.findViewById(R.id.gallery);
+
 		mCache = ImageCache.getInstance(((MainActivity) getActivity()));
 		mCache.setCacheMaxSize(1 * 1024 /* mega */* 1024 /* kilo */);
-		
+
 		initData();
-		
-		Log.e("((MainActivity) getActivity())", ((MainActivity) getActivity()).toString());
-		if (true)
-		{
-			ImageLoaderAdapter adapter = TestData.generateAdapter((MainActivity) getActivity(), mTestData, R.layout.small_thumbnail_item, mCache, 160, 100);
+
+		Log.e("((MainActivity) getActivity())",
+				((MainActivity) getActivity()).toString());
+		if (true) {
+			ImageLoaderAdapter adapter = TestData.generateAdapter(
+					(MainActivity) getActivity(), mTestData,
+					R.layout.small_thumbnail_item, mCache, 160, 100);
 			Log.e("Count", adapter.getCount() + "");
 			gallery.setAdapter(adapter);
 		}
-		
-		
-		
+
 		for (int i = 0; i < tv.length; i++) {
 			tv[i] = (TextView) view.findViewById(tvSET[i][RID]);
 		}
 
 		SQLiteDatabase db = helper.getReadableDatabase();
-
-		// Get Bundle Object
-		// Bundle bundleButterflyData = this.getArguments().getExtras();
-
 		// Get Bundle Data
 		strButterflyName = getArguments().getString("butterfly");
 
 		HashMap<String, String> btfData = new HashMap<String, String>();
 		btfData = helper.getButterflyDetails(db, strButterflyName);
 		db.close();
-
 		if (!btfData.isEmpty()) {
 			tv[tvSET[tvENGNAME][INDEX]].setText(btfData.get(BTF_ENGLISHNAME));
 			tv[tvSET[tvSEX][INDEX]].setText(btfData.get(BTF_SEX));
@@ -165,15 +148,6 @@ public class BtfDetailsFragment extends Fragment {
 			tv[tvSET[tvCHINAME][INDEX]].setText(btfData.get(BTF_CHINESENAME));
 			tv[tvSET[tvSCINAME][INDEX]].setText(btfData.get(BTF_SUBJECT));
 		}
-
 		return view;
 	}
-
-	// @Override
-	// public boolean onCreateOptionsMenu(Menu menu) {
-	// // Inflate the menu; this adds items to the action bar if it is present.
-	// getMenuInflater().inflate(R.menu.btf_details, menu);
-	// return true;
-	// }
-
 }
