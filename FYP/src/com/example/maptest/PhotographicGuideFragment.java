@@ -35,6 +35,8 @@ public class PhotographicGuideFragment extends Fragment {
 		this.activity = activity;
 		helper = new DBButterfly(activity);
 		db = helper.getReadableDatabase();
+		
+		helper.getHotPointDetails(db, "butterfly1");
 	}
 
 	@Override
