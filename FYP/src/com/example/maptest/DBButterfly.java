@@ -15,6 +15,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -124,40 +126,55 @@ public class DBButterfly extends SQLiteOpenHelper {
 	}
 	
 	public void checkForUpdate() {
-		UserFunctions uf = new UserFunctions(getContext());
-		JSONObject json = uf.getVersion();		
-		int intRemoteDBVersion;
-		try {
-			intRemoteDBVersion = Integer.valueOf(json.getString("version"));
-			String strShowMessage = (String) getContext().getResources().getText(R.string.dwnCtnContent) + " ( " + " ver. " +DATABASE_VERSION + " -> " + " ver. " + intRemoteDBVersion + " ) ";
-		if (intRemoteDBVersion > DATABASE_VERSION) {
-		new AlertDialog.Builder(context)
-		.setTitle(R.string.dwnCtnTitle)
-		.setMessage(strShowMessage)
-		.setPositiveButton(android.R.string.ok,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int which) {
-						// Run onUpgrade
-						insertTableFromWeb();
-					}
-				})
-		.setNegativeButton(android.R.string.cancel,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,
-							int which) {
-						// do nothing
-						// finish();
-					}
-				}).show();
+		ConnectivityManager conMgr =  (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		if ( conMgr.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED 
+		    ||  conMgr.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTING  ) {
+
+			UserFunctions uf = new UserFunctions(getContext());
+			JSONObject json = uf.getVersion();		
+			int intRemoteDBVersion;
+			try {
+				intRemoteDBVersion = Integer.valueOf(json.getString("version"));
+				String strShowMessage = (String) getContext().getResources().getText(R.string.dwnCtnContent) + " ( " + " ver. " +DATABASE_VERSION + " -> " + " ver. " + intRemoteDBVersion + " ) ";
+			if (intRemoteDBVersion > DATABASE_VERSION) {
+			new AlertDialog.Builder(context)
+			.setTitle(R.string.dwnCtnTitle)
+			.setMessage(strShowMessage)
+			.setPositiveButton(android.R.string.ok,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,
+								int which) {
+							// Run onUpgrade
+							insertTableFromWeb();
+						}
+					})
+			.setNegativeButton(android.R.string.cancel,
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,
+								int which) {
+							// do nothing
+							// finish();
+						}
+					}).show();
+			}
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    //notify user you are online
+			Log.e("Network Connection", "Connected");
+
 		}
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		else if ( conMgr.getNetworkInfo(0).getState() == NetworkInfo.State.DISCONNECTED 
+		    ||  conMgr.getNetworkInfo(1).getState() == NetworkInfo.State.DISCONNECTED) {
+		    //notify user you are not online
+			Log.e("Network Connection", "Disconnected");
 		}
+		
 	}
 
 	// Creating Tables

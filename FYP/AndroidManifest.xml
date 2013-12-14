@@ -41,9 +41,6 @@
         <activity
             android:name="com.example.maptest.SplashScreen"
             android:label="@string/app_name" android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
-
-            
-            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -53,11 +50,11 @@
         </activity>
         <activity
             android:name="com.example.maptest.testing"
-            android:label="Fo Yueng" android:theme="@android:style/Theme.Light.NoTitleBar">    
+            android:label="Fung Yuen" android:theme="@android:style/Theme.Light.NoTitleBar">    
             </activity>
         <activity
             android:name="com.example.maptest.MainActivity"
-            android:label="Fo Yueng" android:theme="@android:style/Theme.Light.NoTitleBar">    
+            android:label="Fung Yuen" android:theme="@android:style/Theme.Light.NoTitleBar">    
             </activity>
             
         <activity 

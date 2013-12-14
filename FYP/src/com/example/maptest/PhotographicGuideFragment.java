@@ -33,22 +33,15 @@ public class PhotographicGuideFragment extends Fragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		this.activity = activity;
-		helper = new DBButterfly(activity);
-		db = helper.getReadableDatabase();
-		
-		helper.getHotPointDetails(db, "butterfly1");
-		helper.checkForUpdate();
 	}
-	
+
 	@Override
-	public void onDetach() {
-		super.onDetach();
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
 		db.close();
 		helper.close();
-		Log.e("Photographic Guide Fragment detached", "true");
 	}
-
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +51,11 @@ public class PhotographicGuideFragment extends Fragment {
 		topBarBtn = (Button) getActivity().findViewById(R.id.backbarbtn);
 		topBarBtn.setVisibility(View.GONE);
 		View view = inflater.inflate(R.layout.guide1, container, false);
+		helper = new DBButterfly(activity);
+		db = helper.getReadableDatabase();
+		
+		helper.getHotPointDetails(db, "butterfly1");
+		helper.checkForUpdate();
 
 		View.OnClickListener ListenerA = new OnClickListener() {
 

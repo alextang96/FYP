@@ -85,6 +85,14 @@ public class SearchEngineFragment extends Fragment {
 	}
 
 	@Override
+	public void onDestroyView() {
+		// TODO Auto-generated method stub
+		super.onDestroyView();
+		db.close();
+		helper.close();
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -100,7 +108,6 @@ public class SearchEngineFragment extends Fragment {
 		int intNoOfRecord = Integer.valueOf(helper.getNoOfData(db));
 		String[] strSciName = helper.getAllSubject(db);
 		Log.e("NoOfRecord", intNoOfRecord + "");
-		db.close();
 
 		// Spinner
 		rangeSpinner = (Spinner) view.findViewById(R.id.sRange);
@@ -504,8 +511,6 @@ public class SearchEngineFragment extends Fragment {
 				returnString = helper.getChineseNameByRangeType(db,
 						finalSelection);
 				butterflyData.putStringArray("butterfly", returnString);
-
-				db.close();
 
 				((ControlSearchFragment) getParentFragment())
 						.replaceGuide1Fragment(butterflyData);

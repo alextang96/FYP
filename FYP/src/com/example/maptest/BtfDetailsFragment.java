@@ -69,13 +69,13 @@ public class BtfDetailsFragment extends Fragment {
 		super.onAttach(activity);
 		helper = new DBButterfly(activity);
 	}
-	
+
 	@Override
-	public void onDetach() {
-		super.onDetach();
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
 		db.close();
 		helper.close();
-		Log.e("Photographic Guide Fragment detached", "true");
 	}
 
 	private void initData() {

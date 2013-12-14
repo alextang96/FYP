@@ -121,7 +121,7 @@ public class CustomListViewAndroid extends Fragment {
 			CustomListViewValuesArr.add(sched);
 		}
 		Log.e("strButterflyData.length", strButterflyData.length + "");
-		isNullRecord = strButterflyData.length < 2 ? true : false;
+		isNullRecord = strButterflyData[0].equals("No Record!") ? true : false;
 
 	}
 
