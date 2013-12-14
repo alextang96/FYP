@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:orientation="vertical" >
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="70dp" />
+        android:layout_height="120dp" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="310dp" >
+        android:layout_height="520dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="343dp"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -24,7 +24,7 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="40dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content" />
 
                 <TextView
@@ -32,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textSize="15dp" />
+                    android:textSize="30dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -42,13 +42,15 @@
 
                 <TextView
                     android:id="@+id/chiName"
-                    android:layout_width="40dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/sciName"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="30dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -58,11 +60,12 @@
 
                 <TextView
                     android:layout_width="fill_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="15dp"
+                    android:text="" />
 
                 <TextView
                     android:layout_width="553dp"
-                    android:layout_height="4dp"
+                    android:layout_height="8dp"
                     android:layout_gravity="center"
                     android:background="@drawable/separateline" />
 
@@ -73,54 +76,40 @@
 
                 <TextView
                     android:layout_width="fill_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="15dp"
+                    android:text="" />
 
                 <TextView
                     android:layout_width="553dp"
-                    android:layout_height="4dp"
+                    android:layout_height="8dp"
                     android:layout_gravity="center"
                     android:background="@drawable/separateline" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="20dp" />
+                android:layout_height="40dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="319dp"
+                android:layout_height="450dp"
                 android:background="@drawable/background"
                 android:orientation="vertical" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    android:layout_weight="0.70"
+                    android:layout_height="450dp"
                     android:orientation="vertical" >
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="34dp" />
+                        android:layout_height="45dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.00"
                         android:orientation="horizontal" >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="      性別："
-                            android:textSize="16dp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/sex"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="TextView"
-                            android:textSize="14dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -131,8 +120,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="      科："
-                            android:textSize="16dp"
+                            android:text="               科："
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -140,7 +129,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="14dp" />
+                            android:textSize="15dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -151,8 +140,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="      英文名稱："
-                            android:textSize="16dp"
+                            android:text="               英文名稱："
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -160,7 +149,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="14dp" />
+                            android:textSize="15dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -171,8 +160,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="      展翅長度："
-                            android:textSize="16dp"
+                            android:text="               展翅長度："
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -180,7 +169,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="14dp" />
+                            android:textSize="15dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -191,8 +180,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="      體型："
-                            android:textSize="16dp"
+                            android:text="               體型："
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -200,7 +189,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="14dp" />
+                            android:textSize="15dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -211,8 +200,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="      翅面主色："
-                            android:textSize="16dp"
+                            android:text="               翅面主色："
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -220,7 +209,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="14dp" />
+                            android:textSize="15dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -231,8 +220,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="      翅底主色："
-                            android:textSize="16dp"
+                            android:text="               翅底主色："
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -240,7 +229,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="14dp" />
+                            android:textSize="15dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -251,8 +240,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="      翅尾："
-                            android:textSize="16dp"
+                            android:text="               翅尾："
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -260,7 +249,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="14dp" />
+                            android:textSize="15dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -271,8 +260,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="      成蟲食性："
-                            android:textSize="16dp"
+                            android:text="               成蟲食性："
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -280,7 +269,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="14dp" />
+                            android:textSize="15dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -291,8 +280,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="      幼蟲寄主植物："
-                            android:textSize="16dp"
+                            android:text="               幼蟲寄主植物："
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -300,7 +289,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="14dp" />
+                            android:textSize="15dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -311,8 +300,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="      特徵："
-                            android:textSize="16dp"
+                            android:text="               特徵："
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -320,7 +309,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="14dp" />
+                            android:textSize="15dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -331,8 +320,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="      常見月份:"
-                            android:textSize="16dp"
+                            android:text="               常見月份:"
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -340,7 +329,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="14dp" />
+                            android:textSize="15dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -351,8 +340,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="      分佈:"
-                            android:textSize="16dp"
+                            android:text="               分佈:"
+                            android:textSize="20dp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -360,11 +349,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="14dp" />
+                            android:textSize="15dp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

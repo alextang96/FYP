@@ -208,9 +208,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 	}
 
 	// Download JSON from the webserver and insert back to the SQLite
-	private void insertTableFromWeb() {
-		db.execSQL("DROP TABLE IF EXISTS " + BUTTERFLY_TABLE_NAME);
-		
+	private void insertTableFromWeb() {		
 		Log.e("DBBUTERFLY","insertTableFromWeb");
 		SQLiteDatabase db = this.getWritableDatabase();
 		UserFunctions uf = new UserFunctions(getContext());

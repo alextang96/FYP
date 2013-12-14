@@ -8,20 +8,27 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="80dp" />
+        android:layout_height="120dp" />
 
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="305dp" >
+        android:layout_width="fill_parent"
+        android:layout_height="551dp" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_width="593dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:orientation="vertical" >
 
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="210dp"
+                android:textSize="80dp" />
+
             <LinearLayout
-                android:layout_width="360dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -33,26 +40,28 @@
                     android:id="@+id/imageButton1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/type3"
-                    android:tag="粉蝶科" />
+                    android:src="@drawable/type1"
+                    android:tag="弄蝶" />
 
                 <ImageButton
                     android:id="@+id/imageButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/type2"
-                    android:tag="粉蝶科" />
+                    android:tag="鳳蝶" />
 
                 <ImageButton
                     android:id="@+id/imageButton3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/type3"
-                    android:tag="粉蝶科" />
+                    android:tag="粉蝶" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -65,26 +74,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/type4"
-                    android:tag="灰蝶科" />
+                    android:tag="灰蝶" />
 
                 <ImageButton
                     android:id="@+id/imageButton5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/type5"
-                    android:tag="蜆蝶科" />
+                    android:tag="蜆蝶" />
 
                 <ImageButton
                     android:id="@+id/imageButton6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/type6"
-                    android:tag="眼蝶科" />
+                    android:tag="眼蝶" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -97,26 +107,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/type7"
-                    android:tag="環蝶科" />
+                    android:tag="環蝶" />
 
                 <ImageButton
                     android:id="@+id/imageButton8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/type8"
-                    android:tag="蛺蝶科" />
+                    android:tag="蛺蝶" />
 
                 <ImageButton
                     android:id="@+id/imageButton9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/type9"
-                    android:tag="斑褋科" />
+                    android:tag="斑蝶" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -129,14 +140,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/type10"
-                    android:tag="珍蝶科" />
+                    android:tag="珍蝶" />
 
                 <ImageButton
                     android:id="@+id/imageButton11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/type11"
-                    android:tag="喙蝶科" />
+                    android:tag="喙蝶" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
