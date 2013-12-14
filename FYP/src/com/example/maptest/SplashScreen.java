@@ -40,6 +40,7 @@ public class SplashScreen extends Activity {
 					Log.e("hello world", "i am jerry");
 					Log.e("hello world2", "i am jerry2");
 					Log.e("Hello World", "I am Alex");
+					Log.e("Hello World", "I am AlexTang96");
 					Log.e("123","321");
 				}
 			} catch (InterruptedException ex) {
