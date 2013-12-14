@@ -37,11 +37,16 @@ public class SplashScreen extends Activity {
 				synchronized (this) {
 					// Wait given period of time or exit on touch
 					wait(1000);
+// This is Your Version
 					Log.e("hello world", "i am jerry");
 					Log.e("hello world2", "i am jerry2");
 					Log.e("Hello World", "I am Alex");
 					Log.e("Hello World", "I am AlexTang96");
 					Log.e("123","321");
+					Log.e("Hello World", "I am Alex2");
+// This is another person version 
+// I would like to merge this manually by copy and paste
+// The notation of head and base version ID can be deleted
 				}
 			} catch (InterruptedException ex) {
 			}
