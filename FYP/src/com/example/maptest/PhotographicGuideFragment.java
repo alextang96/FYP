@@ -16,9 +16,6 @@ import android.widget.TextView;
 
 public class PhotographicGuideFragment extends Fragment {
 
-	// SQLiteDatabase Target
-	SQLiteDatabase db;
-
 	// Helper Class Name
 	DBButterfly helper;
 
@@ -39,7 +36,6 @@ public class PhotographicGuideFragment extends Fragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		db.close();
 		helper.close();
 	}
 
@@ -52,9 +48,8 @@ public class PhotographicGuideFragment extends Fragment {
 		topBarBtn.setVisibility(View.GONE);
 		View view = inflater.inflate(R.layout.guide1, container, false);
 		helper = new DBButterfly(activity);
-		db = helper.getReadableDatabase();
 		
-		helper.getHotPointDetails(db, "butterfly1");
+		helper.getHotPointDetails("butterfly1");
 		helper.checkForUpdate();
 
 		View.OnClickListener ListenerA = new OnClickListener() {
@@ -63,7 +58,7 @@ public class PhotographicGuideFragment extends Fragment {
 			public void onClick(View v) {
 				Log.e("PhotographicGuideFragment", "onClick()");
 				String[] returnString = helper
-						.getSpecificChineseNameBySpecies(db, v.getTag()
+						.getSpecificChineseNameBySpecies(v.getTag()
 								+ "");
 				for (int i = 0; i < returnString.length; i++) {
 					Log.e("getSpecific1ChineseNameBySpecies", returnString[i]);
@@ -106,7 +101,7 @@ public class PhotographicGuideFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		int intNoOfRecord = Integer.valueOf(helper.getNoOfData(db));
+		int intNoOfRecord = Integer.valueOf(helper.getNoOfData());
 		Log.e("NoOfRecord", intNoOfRecord + "");
 	}
 

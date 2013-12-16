@@ -94,11 +94,9 @@ public class aFragment extends Fragment {
 		} catch (Exception e) {
 
 		}
-		SQLiteDatabase db = helper.getReadableDatabase();
 
 		HashMap<String, String> hpData = new HashMap<String, String>();
-		hpData = helper.getHotPointDetails(db, hpName);
-		db.close();
+		hpData = helper.getHotPointDetails(hpName);
 
 		if (!hpData.isEmpty()) {
 			nameTv.setText(hpName);

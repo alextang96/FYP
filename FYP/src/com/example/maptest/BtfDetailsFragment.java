@@ -40,7 +40,6 @@ public class BtfDetailsFragment extends Fragment {
 
 	private final TestData mTestData = new TestData();
 
-	private SQLiteDatabase db;
 	
 	final int[][] tvSET = { { 0, R.id.spec },
 			{ 1, R.id.engName }, { 2, R.id.bodyRange }, { 3, R.id.rangeType },
@@ -74,7 +73,6 @@ public class BtfDetailsFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		db.close();
 		helper.close();
 	}
 
@@ -115,30 +113,25 @@ public class BtfDetailsFragment extends Fragment {
 
 		mCache = ImageCache.getInstance(((MainActivity) getActivity()));
 		mCache.setCacheMaxSize(1 * 1024 /* mega */* 1024 /* kilo */);
-
+		
 		initData();
 
-		Log.e("((MainActivity) getActivity())",
-				((MainActivity) getActivity()).toString());
-		if (true) {
+
 			ImageLoaderAdapter adapter = TestData.generateAdapter(
 					(MainActivity) getActivity(), mTestData,
 					R.layout.small_thumbnail_item, mCache, 160, 100);
 			Log.e("Count", adapter.getCount() + "");
 			gallery.setAdapter(adapter);
-		}
 
 		for (int i = 0; i < tv.length; i++) {
 			tv[i] = (TextView) view.findViewById(tvSET[i][RID]);
 		}
 
-		db = helper.getReadableDatabase();
 		// Get Bundle Data
 		strButterflyName = getArguments().getString("butterfly");
 
 		HashMap<String, String> btfData = new HashMap<String, String>();
-		btfData = helper.getButterflyDetails(db, strButterflyName);
-		db.close();
+		btfData = helper.getButterflyDetails(strButterflyName);
 		if (!btfData.isEmpty()) {
 			tv[tvSET[tvENGNAME][INDEX]].setText(btfData.get(BTF_ENGLISHNAME));
 			tv[tvSET[tvSPEC][INDEX]].setText(btfData.get(BTF_SPECIES));

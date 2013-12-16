@@ -210,13 +210,14 @@ public class DBButterfly extends SQLiteOpenHelper {
 	// Download JSON from the webserver and insert back to the SQLite
 	private void insertTableFromWeb() {		
 		Log.e("DBBUTERFLY","insertTableFromWeb");
+		resetTables();
 		SQLiteDatabase db = this.getWritableDatabase();
 		UserFunctions uf = new UserFunctions(getContext());
 		JSONObject json = uf.checkVersion(DATABASE_VERSION);
 		try {
 			if (json != null) {
 				for (int i = 0; i < json.getInt("noOfRecord"); i++) {
-					addRecord(db, json.getInt(BTF_ID + i),
+					addRecord(json.getInt(BTF_ID + i),
 							json.getString(BTF_SEX + i),
 							json.getString(BTF_SPECIES + i),
 							json.getString(BTF_CHINESENAME + i),
@@ -265,7 +266,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 		try {
 			if (json != null) {
 				for (int i = 0; i < json.getInt("noOfRecord"); i++) {
-					addRecord(db, json.getInt(BTF_ID + i),
+					addRecord(json.getInt(BTF_ID + i),
 							json.getString(BTF_SEX + i),
 							json.getString(BTF_SPECIES + i),
 							json.getString(BTF_CHINESENAME + i),
@@ -293,14 +294,14 @@ public class DBButterfly extends SQLiteOpenHelper {
 				
 				//TODO dump data 
 				// Bond, you may use this 4 data to show result, thank you
-				this.addHotspotRecord(db, 0, "First places", "BUS", "Butterfly1", "XXXXXXXXXXXX");
-				this.addHotspotRecord(db, 1, "First places", "BUS", "Butterfly1", "XXXXXXXXXXXX");
-				this.addHotspotRecord(db, 2, "First places", "BUS", "Butterfly1", "XXXXXXXXXXXX");
-				this.addHotspotRecord(db, 3, "First places", "BUS", "Butterfly1", "XXXXXXXXXXXX");
-				this.addHotspotRecord(db, 0, "地點1", "  巴士： 227,244,58K （test1）", "Butterfly1", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test1）");
-				this.addHotspotRecord(db, 1, "地點2", "  巴士： 227,244,58K （test2）", "Butterfly2", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test2）");
-				this.addHotspotRecord(db, 2, "地點3", "  巴士： 227,244,58K （test3）", "Butterfly1", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test3）");
-				this.addHotspotRecord(db, 3, "地點4", "  巴士： 227,244,58K （test4）", "Butterfly1", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test4）");
+				this.addHotspotRecord(0, "First places", "BUS", "Butterfly1", "XXXXXXXXXXXX");
+				this.addHotspotRecord(1, "First places", "BUS", "Butterfly1", "XXXXXXXXXXXX");
+				this.addHotspotRecord(2, "First places", "BUS", "Butterfly1", "XXXXXXXXXXXX");
+				this.addHotspotRecord(3, "First places", "BUS", "Butterfly1", "XXXXXXXXXXXX");
+				this.addHotspotRecord(0, "地點1", "  巴士： 227,244,58K （test1）", "Butterfly1", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test1）");
+				this.addHotspotRecord(1, "地點2", "  巴士： 227,244,58K （test2）", "Butterfly2", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test2）");
+				this.addHotspotRecord(2, "地點3", "  巴士： 227,244,58K （test3）", "Butterfly1", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test3）");
+				this.addHotspotRecord(3, "地點4", "  巴士： 227,244,58K （test4）", "Butterfly1", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test4）");
 				
 				
 				db.setVersion(2);
@@ -319,8 +320,8 @@ public class DBButterfly extends SQLiteOpenHelper {
 	}
 
 	//Bond:
-		public HashMap<String, String> getHotPointDetails(SQLiteDatabase db,
-				String hpName) {
+		public HashMap<String, String> getHotPointDetails(String hpName) {
+			SQLiteDatabase db = this.getReadableDatabase();
 			HashMap<String, String> hpData = new HashMap<String, String>();
 			String selectQuery = "select " + "*" + " from " + HOTSPOT_TABLE_NAME
 					+ " WHERE " + H_NAME + " = '" + hpName + "'";
@@ -339,6 +340,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 				// No Data
 			}
 			cursor.close();
+			db.close();
 			// return user
 			return hpData;
 		}
@@ -357,14 +359,14 @@ public class DBButterfly extends SQLiteOpenHelper {
 	/**
 	 * Storing butterfly details in database
 	 * */
-	public void addRecord(SQLiteDatabase db, int _id, String sex, String spec,
+	public void addRecord(int _id, String sex, String spec,
 			String chiName, String engName, String sciName, String bodyRange,
 			String rangeType, String fotColor, String bakColor,
 			String haveWingTail, String adultHabit, String babyHabit,
 			String idenDetail, String appearTime, String distributions,
 			String image1, String image2, String image3) {
 		// TODO addRecord
-		// SQLiteDatabase db = _db; //this.getWritableDatabase();
+		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
 		values.put(BTF_ID, _id);
@@ -389,13 +391,15 @@ public class DBButterfly extends SQLiteOpenHelper {
 
 		// Inserting Row
 		db.insert(BUTTERFLY_TABLE_NAME, null, values);
+		db.close();
 	}
 	
 	/**
 	 * Storing hotspot details in database
 	 * */
-	public void addHotspotRecord(SQLiteDatabase db, int _id, String name, String transportation,
+	public void addHotspotRecord(int _id, String name, String transportation,
 			String butterfly, String environment) {
+		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(H_ID, _id);
 		values.put(H_NAME, name);
@@ -405,13 +409,14 @@ public class DBButterfly extends SQLiteOpenHelper {
 
 		// Inserting Row
 		db.insert(HOTSPOT_TABLE_NAME, null, values);
+		db.close();
 	}
 
 	/**
 	 * Getting butterfly data from database
 	 * */
-	public HashMap<String, String> getButterflyDetails(SQLiteDatabase db,
-			String chiName) {
+	public HashMap<String, String> getButterflyDetails(	String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		HashMap<String, String> btfData = new HashMap<String, String>();
 		String selectQuery = "select " + "*" + " from " + BUTTERFLY_TABLE_NAME
 				+ " WHERE " + BTF_CHINESENAME + " = '" + chiName + "'";
@@ -436,10 +441,14 @@ public class DBButterfly extends SQLiteOpenHelper {
 			btfData.put(BTF_DETAIL, cursor.getString(13));
 			btfData.put(BTF_APPEARTIME, cursor.getString(14));
 			btfData.put(BTF_DISTRIBUTIONS, cursor.getString(15));
+			btfData.put(BTF_IMAGE1, cursor.getString(16));
+			btfData.put(BTF_IMAGE2, cursor.getString(17));
+			btfData.put(BTF_IMAGE3, cursor.getString(18));
 		} else {
 			// No Data
 		}
 		cursor.close();
+		db.close();
 		// return user
 		return btfData;
 	}
@@ -485,7 +494,8 @@ public class DBButterfly extends SQLiteOpenHelper {
 
 	}
 
-	public String getNoOfData(SQLiteDatabase db) {
+	public String getNoOfData() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select Count(" + BTF_ID + ") from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -493,11 +503,12 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
-
+		db.close();
 		return sNote[0];
 	}
 
-	public String[] getAllDistributions(SQLiteDatabase db) {
+	public String[] getAllDistributions() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_DISTRIBUTIONS
 				+ " from " + BUTTERFLY_TABLE_NAME, null);
 
@@ -505,12 +516,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
-
+		db.close();
+		
 		return sNote;
 	}
 
-	public String getDistributionsByChineseName(SQLiteDatabase db,
-			String chiName) {
+	public String getDistributionsByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_DISTRIBUTIONS
 				+ " from " + BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '"
 				+ chiName + "'", null);
@@ -519,23 +531,27 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
-
+		db.close();
+		
 		return sNote[0];
 	}
 
-	public String[] getAllAppearTime(SQLiteDatabase db) {
+	public String[] getAllAppearTime() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_APPEARTIME + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
-
+		
 		// sNote is using for store the retrieve data
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
-
+		db.close();
+		
 		return sNote;
 	}
 
-	public String getAppearTimeByChineseName(SQLiteDatabase db, String chiName) {
+	public String getAppearTimeByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_APPEARTIME + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '" + chiName
 				+ "'", null);
@@ -544,11 +560,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote[0];
 	}
 
-	public String[] getAllDetail(SQLiteDatabase db) {
+	public String[] getAllDetail() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_DETAIL + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -556,11 +574,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
-
+		db.close();
+		
 		return sNote;
 	}
 
-	public String getDetailByChineseName(SQLiteDatabase db, String chiName) {
+	public String getDetailByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_DETAIL + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '" + chiName
 				+ "'", null);
@@ -569,11 +589,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote[0];
 	}
 
-	public String[] getAllBabyHabit(SQLiteDatabase db) {
+	public String[] getAllBabyHabit() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_BABYHABIT + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -581,11 +603,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
 
-	public String getBabyHabitByChineseName(SQLiteDatabase db, String chiName) {
+	public String getBabyHabitByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_BABYHABIT + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '" + chiName
 				+ "'", null);
@@ -594,11 +618,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote[0];
 	}
 
-	public String[] getAllAdultHabit(SQLiteDatabase db) {
+	public String[] getAllAdultHabit() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_ADULTHABIT + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -606,11 +632,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
-
+		db.close();
+		
 		return sNote;
 	}
 
-	public String getAdultHabitByChineseName(SQLiteDatabase db, String chiName) {
+	public String getAdultHabitByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_ADULTHABIT + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '" + chiName
 				+ "'", null);
@@ -619,11 +647,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote[0];
 	}
 
-	public String[] getAllHaveWingTail(SQLiteDatabase db) {
+	public String[] getAllHaveWingTail() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_HAVEWINGTAIL
 				+ " from " + BUTTERFLY_TABLE_NAME, null);
 
@@ -631,11 +661,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
 
-	public String getHaveWingTailByChineseName(SQLiteDatabase db, String chiName) {
+	public String getHaveWingTailByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_HAVEWINGTAIL
 				+ " from " + BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '"
 				+ chiName + "'", null);
@@ -644,11 +676,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
-
+		db.close();
+		
 		return sNote[0];
 	}
 
-	public String[] getAllBackColor(SQLiteDatabase db) {
+	public String[] getAllBackColor() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_BACKCOLOR + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -656,7 +690,8 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
-
+		db.close();
+		
 		return sNote;
 	}
 
@@ -673,7 +708,8 @@ public class DBButterfly extends SQLiteOpenHelper {
 		return sNote[0];
 	}
 
-	public String[] getAllFontColor(SQLiteDatabase db) {
+	public String[] getAllFontColor() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_FONTCOLOR + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -681,11 +717,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
 
-	public String getFontColorByChineseName(SQLiteDatabase db, String chiName) {
+	public String getFontColorByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_FONTCOLOR + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '" + chiName
 				+ "'", null);
@@ -694,11 +732,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote[0];
 	}
 
-	public String[] getAllRangeType(SQLiteDatabase db) {
+	public String[] getAllRangeType() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_RANGETYPE + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -706,11 +746,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
 
-	public String getRangeTypeByChineseName(SQLiteDatabase db, String chiName) {
+	public String getRangeTypeByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_RANGETYPE + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '" + chiName
 				+ "'", null);
@@ -719,11 +761,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote[0];
 	}
 
-	public String[] getAllBodyRange(SQLiteDatabase db) {
+	public String[] getAllBodyRange() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_BODYRANGE + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -731,11 +775,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
 
-	public String getBodyRangeByChineseName(SQLiteDatabase db, String chiName) {
+	public String getBodyRangeByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_BODYRANGE + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '" + chiName
 				+ "'", null);
@@ -744,11 +790,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote[0];
 	}
 
-	public String[] getAllSubject(SQLiteDatabase db) {
+	public String[] getAllSubject() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_SUBJECT + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -756,11 +804,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
 
-	public String[] getSubjectByChineseName(SQLiteDatabase db, String chiName) {
+	public String[] getSubjectByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_SUBJECT + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '" + chiName
 				+ "'", null);
@@ -769,11 +819,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
 
-	public String[] getAllEnglishName(SQLiteDatabase db) {
+	public String[] getAllEnglishName() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_ENGLISHNAME + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -781,11 +833,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
 
-	public String getEnglishNameByChineseName(SQLiteDatabase db, String chiName) {
+	public String getEnglishNameByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_ENGLISHNAME + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '" + chiName
 				+ "'", null);
@@ -794,12 +848,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote[0];
 	}
 
-	public String[] getSpecificChineseNameBySpecies(SQLiteDatabase db,
-			String species) {
+	public String[] getSpecificChineseNameBySpecies(	String species) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		String statement = "" + "SELECT " + BTF_CHINESENAME + " FROM "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_SPECIES + " LIKE '%" + species
 				+ "%'";
@@ -812,11 +867,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
 
-	public String getSpecific1ByChineseName(SQLiteDatabase db, String chiName) {
+	public String getSpecific1ByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_SPECIES + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '" + chiName
 				+ "'", null);
@@ -825,11 +882,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote[0];
 	}
 
-	public String[] getAllChineseName(SQLiteDatabase db) {
+	public String[] getAllChineseName() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -837,11 +896,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
 
-	public String[] getAllSpecies1(SQLiteDatabase db) {
+	public String[] getAllSpecies1() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select DISTINCT " + BTF_SPECIES
 				+ " from " + BUTTERFLY_TABLE_NAME, null);
 
@@ -849,11 +910,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
 
-	public String[] getAllSex(SQLiteDatabase db) {
+	public String[] getAllSex() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_SEX + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -861,11 +924,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
 
-	public String getSexByChineseName(SQLiteDatabase db, String chiName) {
+	public String getSexByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_SEX + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '" + chiName
 				+ "'", null);
@@ -874,11 +939,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote[0];
 	}
 
-	public String[] getAllID(SQLiteDatabase db) {
+	public String[] getAllID() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_ID + " from "
 				+ BUTTERFLY_TABLE_NAME, null);
 
@@ -886,6 +953,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}
@@ -938,9 +1006,8 @@ public class DBButterfly extends SQLiteOpenHelper {
 //
 //			return sNote;
 //		}
-	public String[] getChineseNameByRangeType(SQLiteDatabase db,
-			String rangeType) {
-		
+	public String[] getChineseNameByRangeType(String rangeType) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		//backup
 		Cursor cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE "  + rangeType, null);
@@ -956,6 +1023,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote;
 	}

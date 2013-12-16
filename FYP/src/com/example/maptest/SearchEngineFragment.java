@@ -28,7 +28,6 @@ public class SearchEngineFragment extends Fragment {
 	private int onCreateVieToken = 0;
 
 	// -------
-	SQLiteDatabase db;
 	DBButterfly DBButterfly;
 	// Helper Class Name
 	DBButterfly helper;
@@ -81,14 +80,12 @@ public class SearchEngineFragment extends Fragment {
 		super.onAttach(activity);
 		this.activity = activity;
 		helper = new DBButterfly(activity);
-		db = helper.getReadableDatabase();
 	}
 
 	@Override
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		db.close();
 		helper.close();
 	}
 
@@ -104,9 +101,8 @@ public class SearchEngineFragment extends Fragment {
 		topBarText = (TextView) getActivity().findViewById(R.id.bartext);
 		topBarText.setText("搜尋");
 
-		db = helper.getReadableDatabase();
-		int intNoOfRecord = Integer.valueOf(helper.getNoOfData(db));
-		String[] strSciName = helper.getAllSubject(db);
+		int intNoOfRecord = Integer.valueOf(helper.getNoOfData());
+		String[] strSciName = helper.getAllSubject();
 		Log.e("NoOfRecord", intNoOfRecord + "");
 
 		// Spinner
@@ -250,7 +246,6 @@ public class SearchEngineFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Log.e("OnClickListener", "OnClickListener");
-				db = helper.getReadableDatabase();
 
 				Bundle butterflyData = new Bundle();
 
@@ -508,8 +503,7 @@ public class SearchEngineFragment extends Fragment {
 						+ returnHaveWingTailSelection + fotSelection
 						+ bakSelection;
 
-				returnString = helper.getChineseNameByRangeType(db,
-						finalSelection);
+				returnString = helper.getChineseNameByRangeType(finalSelection);
 				butterflyData.putStringArray("butterfly", returnString);
 
 				((ControlSearchFragment) getParentFragment())
