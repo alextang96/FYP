@@ -36,7 +36,6 @@ public class PhotographicGuideFragment extends Fragment {
 	public void onDestroyView() {
 		// TODO Auto-generated method stub
 		super.onDestroyView();
-		helper.close();
 	}
 
 	@Override
@@ -56,12 +55,12 @@ public class PhotographicGuideFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				Log.e("PhotographicGuideFragment", "onClick()");
+				Log.i("PhotographicGuideFragment", "onClick()");
 				String[] returnString = helper
 						.getSpecificChineseNameBySpecies(v.getTag()
 								+ "");
 				for (int i = 0; i < returnString.length; i++) {
-					Log.e("getSpecific1ChineseNameBySpecies", returnString[i]);
+					Log.i("getSpecific1ChineseNameBySpecies", returnString[i]);
 				}
 
 				Bundle butterflyData = new Bundle();
@@ -102,7 +101,8 @@ public class PhotographicGuideFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		int intNoOfRecord = Integer.valueOf(helper.getNoOfData());
-		Log.e("NoOfRecord", intNoOfRecord + "");
+		Log.i("NoOfRecord", intNoOfRecord + "");
+		helper.close();
 	}
 
 }

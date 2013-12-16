@@ -17,6 +17,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.NetworkInfo.State;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -58,8 +59,6 @@ public class DBButterfly extends SQLiteOpenHelper {
 	private static Context context;
 
 	static SQLiteDatabase db;
-
-	Cursor cursor;
 	
 	protected static final String H_ID = "_id";
 
@@ -78,19 +77,19 @@ public class DBButterfly extends SQLiteOpenHelper {
 	@Override
 	public synchronized void close() {
 		super.close();
-		Log.e("DB Closed", "true");
+		Log.i("DB Closed", "true");
 	}
 
 	@Override
 	public SQLiteDatabase getReadableDatabase() {
-		Log.e("Readable Database Got", "true");
-		Log.e("mGetReadable Version", DATABASE_VERSION + "");
+		Log.i("Readable Database Got", "true");
+		Log.i("mGetReadable Version", DATABASE_VERSION + "");
 		return super.getReadableDatabase();
 	}
 
 	private static boolean databaseExist(Context context) {
 		File dbFile = context.getDatabasePath(DATABASE_NAME);
-		Log.e("databaseExist(context)", dbFile.exists() + "");
+		Log.i("databaseExist(context)", dbFile.exists() + "");
 		return dbFile.exists();
 	}
 
@@ -106,14 +105,14 @@ public class DBButterfly extends SQLiteOpenHelper {
 			}
 		} catch (SQLException ex) {
 			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
-			Log.e("DBButterfly Load Current Version", ex.getMessage() + " The Database Version is " + db.getVersion());
+			Log.i("DBButterfly Load Current Version", ex.getMessage() + " The Database Version is " + db.getVersion());
 		}
 		return DATABASE_VERSION;
 	}
 
 	private DBButterfly(Context context, int version) {
 		this(context, DATABASE_NAME, null, loadCurrentVersion(context));
-		Log.e("Current Database Version", DATABASE_VERSION + "");
+		Log.i("Current Database Version", DATABASE_VERSION + "");
 	}
 
 	private DBButterfly(Context context, String name, CursorFactory factory,
@@ -123,14 +122,14 @@ public class DBButterfly extends SQLiteOpenHelper {
 		if (DATABASE_VERSION == 1) {
 			insertTableFromAsset();
 		}
+		db.close();
 	}
 	
 	public void checkForUpdate() {
 		ConnectivityManager conMgr =  (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		if ( conMgr.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED 
-		    ||  conMgr.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTING  ) {
-
+		if ( conMgr.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED  || conMgr.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTING
+		    ||  conMgr.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED  || conMgr.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTING) {
+			Log.i("current active network type", conMgr.getActiveNetworkInfo().getTypeName());
 			UserFunctions uf = new UserFunctions(getContext());
 			JSONObject json = uf.getVersion();		
 			int intRemoteDBVersion;
@@ -166,13 +165,13 @@ public class DBButterfly extends SQLiteOpenHelper {
 				e.printStackTrace();
 			}
 		    //notify user you are online
-			Log.e("Network Connection", "Connected");
+			Log.i("Network Connection", "Connected");
 
 		}
 		else if ( conMgr.getNetworkInfo(0).getState() == NetworkInfo.State.DISCONNECTED 
 		    ||  conMgr.getNetworkInfo(1).getState() == NetworkInfo.State.DISCONNECTED) {
 		    //notify user you are not online
-			Log.e("Network Connection", "Disconnected");
+			Log.i("Network Connection", "Disconnected");
 		}
 		
 	}
@@ -204,12 +203,12 @@ public class DBButterfly extends SQLiteOpenHelper {
 		db.execSQL(CREATE_BUTTERFLY_HOTSPOT_TABLE);
 
 		// UserFunctions -> Json -> Serverside Database
-		Log.e("Database Created", "true");
+		Log.i("Database Created", "true");
 	}
 
 	// Download JSON from the webserver and insert back to the SQLite
 	private void insertTableFromWeb() {		
-		Log.e("DBBUTERFLY","insertTableFromWeb");
+		Log.i("DBBUTERFLY","insertTableFromWeb");
 		resetTables();
 		SQLiteDatabase db = this.getWritableDatabase();
 		UserFunctions uf = new UserFunctions(getContext());
@@ -236,15 +235,15 @@ public class DBButterfly extends SQLiteOpenHelper {
 							json.getString(BTF_IMAGE1 + i),
 							json.getString(BTF_IMAGE2 + i),
 							json.getString(BTF_IMAGE3 + i));
-					Log.e("BTF_ID", json.getInt(BTF_ID + i) + "");
-					Log.e("BTF_CHINESENAME",
+					Log.i("BTF_ID", json.getInt(BTF_ID + i) + "");
+					Log.i("BTF_CHINESENAME",
 							json.getString(BTF_CHINESENAME + i) + "");
-					Log.e("BTF_DISTRIBUTIONS",
+					Log.i("BTF_DISTRIBUTIONS",
 							json.getString(BTF_DISTRIBUTIONS + i));
 				}
 
 				json = uf.getVersion();
-				Log.e("json.getString(\"version\")", json.getString("version"));
+				Log.i("json.getString(\"version\")", json.getString("version"));
 				db.setVersion(Integer.valueOf(json.getString("version")));
 				DATABASE_VERSION = Integer.valueOf(json.getString("version"));
 			} else {
@@ -285,10 +284,10 @@ public class DBButterfly extends SQLiteOpenHelper {
 							json.getString(BTF_IMAGE1 + i),
 							json.getString(BTF_IMAGE2 + i),
 							json.getString(BTF_IMAGE3 + i));
-					Log.e("BTF_ID", json.getInt(BTF_ID + i) + "");
-					Log.e("BTF_CHINESENAME",
+					Log.i("BTF_ID", json.getInt(BTF_ID + i) + "");
+					Log.i("BTF_CHINESENAME",
 							json.getString(BTF_CHINESENAME + i) + "");
-					Log.e("BTF_DISTRIBUTIONS",
+					Log.i("BTF_DISTRIBUTIONS",
 							json.getString(BTF_DISTRIBUTIONS + i));
 				}
 				
@@ -481,7 +480,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 			for (int i = 0; i < rows_num; i++) {
 				String strCr = cursor.getString(0);
 				sNote[i] = strCr;
-				Log.e("result", sNote[i]);
+				Log.i("result", sNote[i]);
 
 				cursor.moveToNext();// move to next record
 			}
@@ -695,7 +694,8 @@ public class DBButterfly extends SQLiteOpenHelper {
 		return sNote;
 	}
 
-	public String getBackColorByChineseName(SQLiteDatabase db, String chiName) {
+	public String getBackColorByChineseName(String chiName) {
+		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.rawQuery("" + "select " + BTF_BACKCOLOR + " from "
 				+ BUTTERFLY_TABLE_NAME + " WHERE " + BTF_CHINESENAME + " = '" + chiName
 				+ "'", null);
@@ -704,6 +704,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 		String[] sNote = cursorToArray(cursor);
 
 		cursor.close(); // close the cursor to release resources
+		db.close();
 
 		return sNote[0];
 	}
@@ -860,8 +861,8 @@ public class DBButterfly extends SQLiteOpenHelper {
 				+ "%'";
 
 		Cursor cursor = db.rawQuery(statement, null);
-		Log.e("statement", statement);
-		Log.e("cursor", cursor.toString());
+		Log.i("statement", statement);
+		Log.i("cursor", cursor.toString());
 
 		// sNote is using for store the retrieve data
 		String[] sNote = cursorToArray(cursor);
@@ -965,7 +966,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 	
 	
 //	public String[] getChineseNameByFotColor(SQLiteDatabase db, String[] string) {
-//		Log.e("pppo", "jgkjvkjgvjb");
+//		Log.i("pppo", "jgkjvkjgvjb");
 //		cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from " + BUTTERFLY_TABLE_NAME, null); 
 //		
 //
@@ -974,7 +975,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 //		switch (string.length-1){
 //				
 //		case 0:
-////			Log.e("pppo", "jgkjvkjgvjb");
+////			Log.i("pppo", "jgkjvkjgvjb");
 ////			cursor = db.rawQuery("" + "select " + BTF_CHINESENAME + " from " + BUTTERFLY_TABLE_NAME +
 ////					" WHERE " + BTF_FONTCOLOR + " LIKE '" + string[0] + "'", null); 
 //		case 1: 
@@ -1001,7 +1002,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 //
 //			// sNote is using for store the retrieve data
 //			String[] sNote = cursorToArray(cursor);
-//			Log.e(sNote[0],"323");
+//			Log.i(sNote[0],"323");
 //			cursor.close(); // close the cursor to release resources
 //
 //			return sNote;
@@ -1018,7 +1019,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 //				+ "'", null);
 		
 		
-		Log.e(rangeType,"hi");
+		Log.i(rangeType,"hi");
 		// sNote is using for store the retrieve data
 		String[] sNote = cursorToArray(cursor);
 
@@ -1065,7 +1066,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 //
 //		// sNote is using for store the retrieve data
 //		String[] sNote = cursorToArray(cursor);
-//		Log.e(sNote[0],"323");
+//		Log.i(sNote[0],"323");
 //		cursor.close(); // close the cursor to release resources
 //
 //		return sNote;

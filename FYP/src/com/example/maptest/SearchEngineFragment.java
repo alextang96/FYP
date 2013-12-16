@@ -83,13 +83,6 @@ public class SearchEngineFragment extends Fragment {
 	}
 
 	@Override
-	public void onDestroyView() {
-		// TODO Auto-generated method stub
-		super.onDestroyView();
-		helper.close();
-	}
-
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -505,7 +498,8 @@ public class SearchEngineFragment extends Fragment {
 
 				returnString = helper.getChineseNameByRangeType(finalSelection);
 				butterflyData.putStringArray("butterfly", returnString);
-
+				helper.close();
+				
 				((ControlSearchFragment) getParentFragment())
 						.replaceGuide1Fragment(butterflyData);
 

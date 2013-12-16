@@ -57,7 +57,6 @@ public class UserFunctions {
 	}
 
 	public JSONObject checkVersion(int currentVersion) {
-		final String passVersion = currentVersion + "";
 		JSONObject json;
 
 		DbNetworkConnect networkConnect = new DbNetworkConnect(getActivity(),
@@ -125,16 +124,16 @@ public class UserFunctions {
 				sb.append(line + "n");
 			}
 			json = sb.toString();
-			Log.e("JSON", json);
+			Log.i("JSON", json);
 		} catch (Exception e) {
-			Log.e("Buffer Error", "Error converting result " + e.toString());
+			Log.i("Buffer Error", "Error converting result " + e.toString());
 		}
 
 		// try parse the string to a JSON object
 		try {
 			jObj = new JSONObject(json);
 		} catch (JSONException e) {
-			Log.e("JSON Parser", "Error parsing data " + e.toString());
+			Log.i("JSON Parser", "Error parsing data " + e.toString());
 		}
 
 		// return JSON String

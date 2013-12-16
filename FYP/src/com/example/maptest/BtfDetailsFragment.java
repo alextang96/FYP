@@ -73,7 +73,6 @@ public class BtfDetailsFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		helper.close();
 	}
 
 	private void initData() {
@@ -150,6 +149,7 @@ public class BtfDetailsFragment extends Fragment {
 			tv[tvSET[tvCHINAME][INDEX]].setText(btfData.get(BTF_CHINESENAME));
 			tv[tvSET[tvSCINAME][INDEX]].setText(btfData.get(BTF_SUBJECT));
 		}
+		helper.close();
 		return view;
 	}
 }

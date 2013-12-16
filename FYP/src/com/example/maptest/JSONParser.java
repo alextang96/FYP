@@ -61,7 +61,7 @@ public class JSONParser {
             }
             is.close();
             json = sb.toString();
-            Log.e("JSON", json);
+            Log.i("JSON", json);
         } catch (Exception e) {
             Log.e("Buffer Error", "Error converting result " + e.toString());
         }

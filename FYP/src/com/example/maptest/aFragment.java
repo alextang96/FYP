@@ -97,7 +97,7 @@ public class aFragment extends Fragment {
 
 		HashMap<String, String> hpData = new HashMap<String, String>();
 		hpData = helper.getHotPointDetails(hpName);
-
+		helper.close();
 		if (!hpData.isEmpty()) {
 			nameTv.setText(hpName);
 			transportation1Tv.setText(hpData.get(H_TRANS));
