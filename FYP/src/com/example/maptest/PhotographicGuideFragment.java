@@ -46,9 +46,9 @@ public class PhotographicGuideFragment extends Fragment {
 		topBarBtn = (Button) getActivity().findViewById(R.id.backbarbtn);
 		topBarBtn.setVisibility(View.GONE);
 		View view = inflater.inflate(R.layout.guide1, container, false);
-		helper = new DBButterfly(activity);
+		helper = new DBButterfly(view.getContext());
 		
-		helper.getHotPointDetails("butterfly1");
+		// helper.getHotPointDetails("butterfly1");
 		helper.checkForUpdate();
 
 		View.OnClickListener ListenerA = new OnClickListener() {
