@@ -1,10 +1,6 @@
 package com.example.maptest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,7 +16,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SearchEngineFragment extends Fragment {
 	private Button topBarBtn;
