@@ -61,8 +61,11 @@ public class DBButterfly extends SQLiteOpenHelper {
 	static SQLiteDatabase db;
 
 	protected static final String H_ID = "_id";
+
 	protected static final String H_NAME = "name";
+
 	protected static final String H_TRANS = "transportation";
+
 	protected static final String H_BTF = "butterfly";
 
 	protected static final String H_ENVIRO = "environment";
@@ -99,7 +102,6 @@ public class DBButterfly extends SQLiteOpenHelper {
 				DATABASE_VERSION = db.getVersion();
 			} else {
 				// The database is not Exist
-				Log.i("Database is not Exitst", "Database is not Exitst");
 			}
 		} catch (SQLException ex) {
 			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -146,9 +148,6 @@ public class DBButterfly extends SQLiteOpenHelper {
 						+ " -> "
 						+ " ver. "
 						+ intRemoteDBVersion + " ) ";
-				
-				this.onUpgrade(db, 2, intRemoteDBVersion);
-				addHotSpot();
 				if (intRemoteDBVersion > DATABASE_VERSION) {
 					new AlertDialog.Builder(context)
 							.setTitle(R.string.dwnCtnTitle)
@@ -219,8 +218,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 	// Download JSON from the webserver and insert back to the SQLite
 	private void insertTableFromWeb() {
 		Log.i("DBBUTERFLY", "insertTableFromWeb");
-		db = this.getWritableDatabase();
-		db.delete(BUTTERFLY_TABLE_NAME, null, null);
+		resetTables();
 		UserFunctions uf = new UserFunctions(getContext());
 		JSONObject json = uf.checkVersion(db.getVersion());
 		try {
@@ -301,7 +299,40 @@ public class DBButterfly extends SQLiteOpenHelper {
 							json.getString(BTF_DISTRIBUTIONS + i));
 				}
 
-				addHotSpot();
+				// TODO dump data
+				// Bond, you may use this 4 data to show result, thank you
+				// this.addHotspotRecord(0, "First places", "BUS", "Butterfly1",
+				// "XXXXXXXXXXXX");
+				// this.addHotspotRecord(1, "First places", "BUS", "Butterfly1",
+				// "XXXXXXXXXXXX");
+				// this.addHotspotRecord(2, "First places", "BUS", "Butterfly1",
+				// "XXXXXXXXXXXX");
+				// this.addHotspotRecord(3, "First places", "BUS", "Butterfly1",
+				// "XXXXXXXXXXXX");
+				this.addHotspotRecord(
+						0,
+						"地點1",
+						"  巴士： 227,244,58K （test1）",
+						"Butterfly1",
+						"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test1）");
+				this.addHotspotRecord(
+						1,
+						"地點2",
+						"  巴士： 227,244,58K （test2）",
+						"Butterfly2",
+						"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test2）");
+				this.addHotspotRecord(
+						2,
+						"地點3",
+						"  巴士： 227,244,58K （test3）",
+						"Butterfly1",
+						"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test3）");
+				this.addHotspotRecord(
+						3,
+						"地點4",
+						"  巴士： 227,244,58K （test4）",
+						"Butterfly1",
+						"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test4）");
 
 				db.setVersion(2);
 				DATABASE_VERSION = 2;
@@ -316,35 +347,6 @@ public class DBButterfly extends SQLiteOpenHelper {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private void addHotSpot() {
-		// TODO dump data
-		// Bond, you may use this 4 data to show result, thank you
-		this.addHotspotRecord(
-				0,
-				"地點1",
-				"  巴士： 227,244,58K （test1）",
-				"Butterfly1",
-				"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test1）");
-		this.addHotspotRecord(
-				1,
-				"地點2",
-				"  巴士： 227,244,58K （test2）",
-				"Butterfly2",
-				"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test2）");
-		this.addHotspotRecord(
-				2,
-				"地點3",
-				"  巴士： 227,244,58K （test3）",
-				"Butterfly1",
-				"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test3）");
-		this.addHotspotRecord(
-				3,
-				"地點4",
-				"  巴士： 227,244,58K （test4）",
-				"Butterfly1",
-				"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  （test4）");
 	}
 
 	// Bond:
@@ -378,11 +380,9 @@ public class DBButterfly extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// Drop older table if existed
 		db.execSQL("DROP TABLE IF EXISTS " + BUTTERFLY_TABLE_NAME);
-		db.execSQL("DROP TABLE IF EXISTS " + HOTSPOT_TABLE_NAME);
-		
+
 		// Create tables again
 		onCreate(db);
-		
 	}
 
 	/**
@@ -478,6 +478,16 @@ public class DBButterfly extends SQLiteOpenHelper {
 		db.close();
 		// return user
 		return btfData;
+	}
+
+	/**
+	 * Re crate database Delete all tables and create them again
+	 * */
+	public void resetTables() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		// Delete All Rows
+		db.delete(BUTTERFLY_TABLE_NAME, null, null);
+		db.close();
 	}
 
 	public static Context getContext() {
