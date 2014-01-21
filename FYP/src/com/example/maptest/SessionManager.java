@@ -64,6 +64,19 @@ public class SessionManager {
 		// commit changes
 		editor.commit();
 	}
+	
+	/**
+	 * Update the Checking
+	 **/
+	public void setIsChecked(boolean isChecked) {
+		editor = pref.edit();
+
+		// Storing database version in pref
+		editor.putBoolean(IS_CHECKED_UPDATED, isChecked);
+
+		// commit changes
+		editor.commit();
+	}
 
 	/**
 	 * Get stored session data

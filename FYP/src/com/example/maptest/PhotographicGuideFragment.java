@@ -51,16 +51,16 @@ public class PhotographicGuideFragment extends Fragment {
 		helper = new DBButterfly(activity);
 		
 		// helper.getHotPointDetails("butterfly1");
-		if (helper.checkForUpdate()) {
-			SQLiteDatabase.releaseMemory();
-			// avoid old database data reuse, thus, need to create again
-			helper = new DBButterfly(activity);
-		}
+		helper.checkForUpdate();
 
 		View.OnClickListener ListenerA = new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				// avoid old database data reuse, thus, need to create again
+				helper.closeDB();
+				SQLiteDatabase.releaseMemory();
+				helper = new DBButterfly(activity);
 				Log.i("PhotographicGuideFragment", "onClick()");
 				String[] returnString = helper
 						.getSpecificChineseNameBySpecies(v.getTag()
