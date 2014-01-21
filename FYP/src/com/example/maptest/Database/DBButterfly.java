@@ -73,6 +73,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 	private static Context context;
 
 	static SQLiteDatabase db;
+	protected boolean isPressed = false;
 
 	// Create table SQL statement
 	private static final String CREATE_BUTTERFLY_TABLE = "CREATE TABLE "
@@ -241,6 +242,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 													.getReadableDatabase();
 											db.close();
 											DATABASE_VERSION = intRemoteDBVersion;
+											isPressed = true;
 										}
 									})
 							.setNegativeButton(android.R.string.cancel,
@@ -252,8 +254,9 @@ public class DBButterfly extends SQLiteOpenHelper {
 											// finish();
 										}
 									}).show();
-					if (intRemoteDBVersion == DATABASE_VERSION) {
-						return true;
+					if (isPressed) {
+						Log.i("DBButterfly", "Check Update Return True");
+						return isPressed;
 					}
 				}
 			} catch (NumberFormatException e) {
@@ -271,7 +274,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 			// notify user you are not online
 			Log.i("Network Connection", "Disconnected");
 		}
-		return false;
+		return isPressed;
 	}
 
 	// Bond:
