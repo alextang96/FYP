@@ -51,7 +51,11 @@ public class PhotographicGuideFragment extends Fragment {
 		helper = new DBButterfly(activity);
 		
 		// helper.getHotPointDetails("butterfly1");
-		helper.checkForUpdate();
+		if (helper.checkForUpdate()) {
+			SQLiteDatabase.releaseMemory();
+			// avoid old database data reuse, thus, need to create again
+			helper = new DBButterfly(activity);
+		}
 
 		View.OnClickListener ListenerA = new OnClickListener() {
 

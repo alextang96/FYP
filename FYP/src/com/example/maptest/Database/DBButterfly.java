@@ -177,7 +177,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 		return DATABASE_VERSION;
 	}
 
-	public void checkForUpdate() {
+	public boolean checkForUpdate() {
 		// initial the database again because it is a public method
 		SQLiteDatabase db = this.getWritableDatabase();
 
@@ -194,7 +194,8 @@ public class DBButterfly extends SQLiteOpenHelper {
 		UserDetails = session.getUserDetails();
 		intDBVersion = (Integer) UserDetails
 				.get(SessionManager.DATABASE_VERSION);
-		Log.i("DBButterfly check For Update", " DBVersion from session : " + intDBVersion + "");
+		Log.i("DBButterfly check For Update", " DBVersion from session : "
+				+ intDBVersion + "");
 		if (db == null) {
 			Log.i("DBButterfly", "The database is null");
 		}
@@ -228,16 +229,18 @@ public class DBButterfly extends SQLiteOpenHelper {
 										public void onClick(
 												DialogInterface dialog,
 												int which) {
-											// Run onUpgrade because value changed
+											// Run onUpgrade because value
+											// changed
 											Log.i("DBButterfly",
 													"Ready to upgrade Database. Version : "
 															+ intRemoteDBVersion);
 											session.setDBVersion(intRemoteDBVersion);
-											DBButterfly helper = new DBButterfly(getContext());
-											SQLiteDatabase db = helper.getReadableDatabase();
+											DBButterfly helper = new DBButterfly(
+													getContext());
+											SQLiteDatabase db = helper
+													.getReadableDatabase();
 											db.close();
-											SQLiteDatabase.releaseMemory();
-
+											DATABASE_VERSION = intRemoteDBVersion;
 										}
 									})
 							.setNegativeButton(android.R.string.cancel,
@@ -249,6 +252,9 @@ public class DBButterfly extends SQLiteOpenHelper {
 											// finish();
 										}
 									}).show();
+					if (intRemoteDBVersion == DATABASE_VERSION) {
+						return true;
+					}
 				}
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
@@ -265,6 +271,7 @@ public class DBButterfly extends SQLiteOpenHelper {
 			// notify user you are not online
 			Log.i("Network Connection", "Disconnected");
 		}
+		return false;
 	}
 
 	// Bond:
@@ -330,7 +337,8 @@ public class DBButterfly extends SQLiteOpenHelper {
 		} finally {
 			db.endTransaction();
 			// DATABASE_VERSION = newVersion + 1;
-			Log.i("DBButterfly", "database finally upgraded to Ver." + newVersion);
+			Log.i("DBButterfly", "database finally upgraded to Ver."
+					+ newVersion);
 		}
 
 	}
@@ -338,11 +346,11 @@ public class DBButterfly extends SQLiteOpenHelper {
 	// Download JSON from the webserver and insert back to the SQLite
 	private void insertTableFromWeb(SQLiteDatabase db) {
 		int intNewVersion;
-		Log.i("DBBUTERFLY", "insertTableFromWeb");
-
 		UserFunctions uf = new UserFunctions(getContext());
 		JSONObject json = uf.checkVersion(db.getVersion());
 		try {
+			// Reset Table
+			db.delete(BUTTERFLY_TABLE_NAME, null, null);
 			if (json != null) {
 				for (int i = 0; i < json.getInt("noOfRecord"); i++) {
 					Butterfly newButterfly = new Butterfly(json.getInt(BTF_ID
@@ -372,10 +380,11 @@ public class DBButterfly extends SQLiteOpenHelper {
 
 				}
 
-				json = uf.getVersion();
-				Log.i("json.getString(\"version\")", json.getString("version"));
-				intNewVersion = Integer.valueOf(json.getString("version"));
-				session.setDBVersion(intNewVersion);
+				// json = uf.getVersion();
+				// Log.i("json.getString(\"version\")",
+				// json.getString("version"));
+				// intNewVersion = Integer.valueOf(json.getString("version"));
+				// session.setDBVersion(intNewVersion);
 				db.setTransactionSuccessful();
 			} else {
 				Toast.makeText(
@@ -549,16 +558,6 @@ public class DBButterfly extends SQLiteOpenHelper {
 		closeDB();
 		// return user
 		return btfData;
-	}
-
-	/**
-	 * Re crate database Delete all tables and create them again
-	 * */
-	public void resetTables() {
-		SQLiteDatabase db = this.getWritableDatabase();
-		// Delete All Rows
-		db.delete(BUTTERFLY_TABLE_NAME, null, null);
-		closeDB();
 	}
 
 	public static Context getContext() {
