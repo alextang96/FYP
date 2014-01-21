@@ -1,22 +1,24 @@
 package com.example.maptest;
 
-import static com.example.maptest.DBButterfly.BTF_ADULTHABIT;
-import static com.example.maptest.DBButterfly.BTF_APPEARTIME;
-import static com.example.maptest.DBButterfly.BTF_BABYHABIT;
-import static com.example.maptest.DBButterfly.BTF_BACKCOLOR;
-import static com.example.maptest.DBButterfly.BTF_BODYRANGE;
-import static com.example.maptest.DBButterfly.BTF_CHINESENAME;
-import static com.example.maptest.DBButterfly.BTF_DETAIL;
-import static com.example.maptest.DBButterfly.BTF_DISTRIBUTIONS;
-import static com.example.maptest.DBButterfly.BTF_ENGLISHNAME;
-import static com.example.maptest.DBButterfly.BTF_FONTCOLOR;
-import static com.example.maptest.DBButterfly.BTF_HAVEWINGTAIL;
-import static com.example.maptest.DBButterfly.BTF_RANGETYPE;
-import static com.example.maptest.DBButterfly.BTF_SEX;
-import static com.example.maptest.DBButterfly.BTF_SPECIES;
-import static com.example.maptest.DBButterfly.BTF_SUBJECT;
+import static com.example.maptest.Database.DBButterfly.BTF_ADULTHABIT;
+import static com.example.maptest.Database.DBButterfly.BTF_APPEARTIME;
+import static com.example.maptest.Database.DBButterfly.BTF_BABYHABIT;
+import static com.example.maptest.Database.DBButterfly.BTF_BACKCOLOR;
+import static com.example.maptest.Database.DBButterfly.BTF_BODYRANGE;
+import static com.example.maptest.Database.DBButterfly.BTF_CHINESENAME;
+import static com.example.maptest.Database.DBButterfly.BTF_DETAIL;
+import static com.example.maptest.Database.DBButterfly.BTF_DISTRIBUTIONS;
+import static com.example.maptest.Database.DBButterfly.BTF_ENGLISHNAME;
+import static com.example.maptest.Database.DBButterfly.BTF_FONTCOLOR;
+import static com.example.maptest.Database.DBButterfly.BTF_HAVEWINGTAIL;
+import static com.example.maptest.Database.DBButterfly.BTF_RANGETYPE;
+import static com.example.maptest.Database.DBButterfly.BTF_SCINAME;
+import static com.example.maptest.Database.DBButterfly.BTF_SEX;
+import static com.example.maptest.Database.DBButterfly.BTF_SPECIES;
 
 import java.util.HashMap;
+
+import com.example.maptest.Database.DBButterfly;
 
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
@@ -147,7 +149,7 @@ public class BtfDetailsFragment extends Fragment {
 			tv[tvSET[tvDISTRIBUTIONS][INDEX]].setText(btfData
 					.get(BTF_DISTRIBUTIONS));
 			tv[tvSET[tvCHINAME][INDEX]].setText(btfData.get(BTF_CHINESENAME));
-			tv[tvSET[tvSCINAME][INDEX]].setText(btfData.get(BTF_SUBJECT));
+			tv[tvSET[tvSCINAME][INDEX]].setText(btfData.get(BTF_SCINAME));
 		}
 		helper.close();
 		return view;

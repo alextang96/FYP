@@ -1,9 +1,12 @@
 package com.example.maptest;
 
+import com.example.maptest.Database.DBButterfly;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -41,6 +44,11 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		setImageGone();
+		// initial the database
+		DBButterfly helper = new DBButterfly(MainActivity.this);
+		SQLiteDatabase db = helper.getReadableDatabase();
+		db.close();
+		SQLiteDatabase.releaseMemory();
 
 		// android.support.v4.app.FragmentTransaction fragmentTransaction =
 		// fragment

@@ -1,5 +1,7 @@
 package com.example.maptest;
 
+import com.example.maptest.Database.DBButterfly;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -90,7 +92,7 @@ public class SearchEngineFragment extends Fragment {
 		topBarText.setText("搜尋");
 
 		int intNoOfRecord = Integer.valueOf(helper.getNoOfData());
-		String[] strSciName = helper.getAllSubject();
+		String[] strSciName = helper.getAllSciName();
 		Log.e("NoOfRecord", intNoOfRecord + "");
 
 		// Spinner

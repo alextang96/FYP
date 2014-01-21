@@ -1,5 +1,7 @@
 package com.example.maptest;
 
+import com.example.maptest.Database.DBButterfly;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -46,7 +48,7 @@ public class PhotographicGuideFragment extends Fragment {
 		topBarBtn = (Button) getActivity().findViewById(R.id.backbarbtn);
 		topBarBtn.setVisibility(View.GONE);
 		View view = inflater.inflate(R.layout.guide1, container, false);
-		helper = new DBButterfly(view.getContext());
+		helper = new DBButterfly(activity);
 		
 		// helper.getHotPointDetails("butterfly1");
 		helper.checkForUpdate();

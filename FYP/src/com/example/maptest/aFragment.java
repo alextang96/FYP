@@ -1,12 +1,14 @@
 package com.example.maptest;
 
-import static com.example.maptest.DBButterfly.H_ID;
-import static com.example.maptest.DBButterfly.H_NAME;
-import static com.example.maptest.DBButterfly.H_TRANS;
-import static com.example.maptest.DBButterfly.H_BTF;
-import static com.example.maptest.DBButterfly.H_ENVIRO;
+import static com.example.maptest.Database.DBButterfly.H_BTF;
+import static com.example.maptest.Database.DBButterfly.H_ENVIRO;
+import static com.example.maptest.Database.DBButterfly.H_ID;
+import static com.example.maptest.Database.DBButterfly.H_NAME;
+import static com.example.maptest.Database.DBButterfly.H_TRANS;
 
 import java.util.HashMap;
+
+import com.example.maptest.Database.DBButterfly;
 
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
